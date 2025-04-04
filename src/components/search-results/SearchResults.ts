@@ -2,51 +2,55 @@ import { watch, defineComponent, onMounted, ref } from 'vue';
 import { usePlacesStore, useMapStore } from '@/composables';
 import { Feature } from '@/interfaces/places';
 
-
 export default defineComponent({
     name: 'SearchResults',
-    setup(){
+    setup() {
 
-        const { isLoadingPlaces, places, userLocation } = usePlacesStore()
-        const { map, setPlaceMarkers, getRouteBetweenPoints } = useMapStore()
-        const activePlace = ref('')
+        const { isLoadingPlaces, places, userLocation } = usePlacesStore();
+        const { map, setPlaceMarkers, getRouteBetweenPoints } = useMapStore();
+        const activePlace = ref<string>('');
 
-        watch( places, (newPlaces) => {
-            // Convert places into markers in the map mutations
-            activePlace.value = ''
-            setPlaceMarkers(newPlaces)
-        } )
+        // Watch for changes in places and update markers on the map
+        watch(places, (newPlaces) => {
+            activePlace.value = ''; // Clear active place when places change
+            setPlaceMarkers(newPlaces); // Update map with new markers
+        });
 
+        // Function to handle clicking on a place and fly to its location
+        const onPlaceClicked = (place: Feature) => {
+            activePlace.value = place.id; // Set the active place
+            const [lng, lat] = place.center; // Extract coordinates from place
 
-        return{
+            // Fly the map to the selected place
+            map.value?.flyTo({
+                center: [lng, lat],
+                zoom: 14
+            });
+        };
+
+        // Function to get directions from the user's location to the selected place
+        const getRouteDirections = (place: Feature) => {
+            if (!userLocation.value) return; // Return early if no user location
+
+            activePlace.value = place.id; // Set the active place
+            const [lng, lat] = place.center; // Extract coordinates from place
+            const [startLng, startLat] = userLocation.value; // Extract user's location
+
+            // Define start and end points for the route
+            const start: [number, number] = [startLng, startLat];
+            const end: [number, number] = [lng, lat];
+
+            // Get route between user location and selected place
+            getRouteBetweenPoints(start, end);
+        };
+
+        // Return all reactive variables and methods to the template
+        return {
             isLoadingPlaces,
             places,
             activePlace,
-
-            onPlaceClicked: ( place: Feature ) => {
-                
-                activePlace.value = place.id
-                const [lng, lat] = place.center
-
-                map.value?.flyTo({
-                    center: [lng, lat],
-                    zoom: 14
-                })
-
-            },
-
-            getRouteDirections: (place: Feature) => {
-                if(!userLocation.value) return;
-
-                activePlace.value = place.id
-                const [lng, lat] = place.center
-                const [startLng, startLat] = userLocation.value
-
-                const start: [number, number] = [startLng, startLat]
-                const end: [number, number] = [lng, lat]
-
-                getRouteBetweenPoints(start, end)
-            }
-        }
+            onPlaceClicked,
+            getRouteDirections
+        };
     }
-})
+});

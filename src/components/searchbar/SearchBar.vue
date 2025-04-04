@@ -2,9 +2,10 @@
 
 <template>
     <div class="searchbar-container">
-        <input class="form-control" type="text" placeholder="Search a place and press Enter!" v-model="searchTerm"/>
-
+        
+        <input class="form-control" type="text" placeholder="Recherchez un lieu et choisissez la destination!" v-model="searchTerm"/>
         <SearchResults/>
+
     </div>
 
     

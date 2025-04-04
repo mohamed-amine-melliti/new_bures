@@ -1,7 +1,5 @@
 <template>
-  <h1 class="title">Vue-Maps</h1>
   <router-view/>
-  <img src="./assets/logo.png" alt="Vue Logo" class="logo">
 </template>
 
 <style>

@@ -6,7 +6,7 @@
 
   <SearchBar/>
   
-  <TripDetails/>>
+  <TripDetails/>
 
 </template>
 
