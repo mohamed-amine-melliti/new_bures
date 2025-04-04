@@ -1,13 +1,8 @@
 <template>
-
   <MapView/>
-
   <MyLocationBtn/>
-
   <SearchBar/>
-  
   <TripDetails/>
-
 </template>
 
 <script lang="ts">
