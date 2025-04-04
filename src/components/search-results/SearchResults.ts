@@ -1,14 +1,16 @@
-import { watch, defineComponent, onMounted, ref } from 'vue';
+import { watch, defineComponent, onMounted, ref, defineEmits } from 'vue';
 import { usePlacesStore, useMapStore } from '@/composables';
 import { Feature } from '@/interfaces/places';
 
 export default defineComponent({
     name: 'SearchResults',
     setup() {
-
         const { isLoadingPlaces, places, userLocation } = usePlacesStore();
         const { map, setPlaceMarkers, getRouteBetweenPoints } = useMapStore();
         const activePlace = ref<string>('');
+
+        // Define emit function for event handling
+        const emit = defineEmits(["placeSelected"]);
 
         // Watch for changes in places and update markers on the map
         watch(places, (newPlaces) => {
@@ -42,6 +44,9 @@ export default defineComponent({
 
             // Get route between user location and selected place
             getRouteBetweenPoints(start, end);
+
+            // Emit event to inform the parent component
+            emit("placeSelected", place);
         };
 
         // Return all reactive variables and methods to the template
