@@ -1,6 +1,6 @@
 <template>
     <button v-if="isBtnReady" class="btn btn-primary" @click="onMyLocationClick">
-       Aller au 
+       Ma Position
     </button>
 </template>
 
