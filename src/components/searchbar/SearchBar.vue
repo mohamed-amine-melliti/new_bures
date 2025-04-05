@@ -4,7 +4,7 @@
     <div class="searchbar-container">
         
         <input class="form-control" type="text" placeholder="Recherchez un lieu et choisissez la destination!" v-model="searchTerm"/>
-        <SearchResults @placeSelected="onPlaceSelected" />
+        <SearchResults/>
 
     </div>
 
