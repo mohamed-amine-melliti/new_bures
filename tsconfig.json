@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",                         // Changed from "es5" for better modern support
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
@@ -13,20 +13,16 @@
     "useDefineForClassFields": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": [
-      "webpack-env"
-    ],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
     "lib": [
-      "es2015",
       "esnext",
       "dom",
-      "dom.iterable",
-      "scripthost"
+      "dom.iterable"
+    ],
+    "types": [
+      "vite/client"
     ]
   },
   "include": [

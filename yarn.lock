@@ -1117,6 +1117,15 @@
     "@vueuse/shared" "12.8.2"
     vue "^3.5.13"
 
+"@vueuse/core@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.npmjs.org/@vueuse/core/-/core-13.0.0.tgz"
+  integrity sha512-rkgb4a8/0b234lMGCT29WkCjPfsX0oxrIRR7FDndRoW3FsaC9NBzefXg/9TLhAgwM11f49XnutshM4LzJBrQ5g==
+  dependencies:
+    "@types/web-bluetooth" "^0.0.21"
+    "@vueuse/metadata" "13.0.0"
+    "@vueuse/shared" "13.0.0"
+
 "@vueuse/metadata@10.11.1":
   version "10.11.1"
   resolved "https://registry.npmjs.org/@vueuse/metadata/-/metadata-10.11.1.tgz"
@@ -1126,6 +1135,11 @@
   version "12.8.2"
   resolved "https://registry.npmjs.org/@vueuse/metadata/-/metadata-12.8.2.tgz"
   integrity sha512-rAyLGEuoBJ/Il5AmFHiziCPdQzRt88VxR+Y/A/QhJ1EWtWqPBBAxTAFaSkviwEuOEZNtW8pvkPgoCZQ+HxqW1A==
+
+"@vueuse/metadata@13.0.0":
+  version "13.0.0"
+  resolved "https://registry.npmjs.org/@vueuse/metadata/-/metadata-13.0.0.tgz"
+  integrity sha512-TRNksqmvtvqsuHf7bbgH9OSXEV2b6+M3BSN4LR5oxWKykOFT9gV78+C2/0++Pq9KCp9KQ1OQDPvGlWNQpOb2Mw==
 
 "@vueuse/shared@^10.11.0", "@vueuse/shared@10.11.1":
   version "10.11.1"
@@ -1140,6 +1154,11 @@
   integrity sha512-dznP38YzxZoNloI0qpEfpkms8knDtaoQ6Y/sfS0L7Yki4zh40LFHEhur0odJC6xTHG5dxWVPiUWBXn+wCG2s5w==
   dependencies:
     vue "^3.5.13"
+
+"@vueuse/shared@13.0.0":
+  version "13.0.0"
+  resolved "https://registry.npmjs.org/@vueuse/shared/-/shared-13.0.0.tgz"
+  integrity sha512-9MiHhAPw+sqCF/RLo8V6HsjRqEdNEWVpDLm2WBRW2G/kSQjb8X901sozXpSCaeLG0f7TEfMrT4XNaA5m1ez7Dg==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
@@ -5840,7 +5859,7 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-"vue@^2 || ^3.2.13", "vue@^2.7.0 || ^3.0.0", "vue@^3.0.0-0 || ^2.6.0", vue@^3.2.0, vue@^3.2.13, vue@^3.5.13, "vue@>= 3.2.0", vue@>=3, vue@3.5.13:
+"vue@^2 || ^3.2.13", "vue@^2.7.0 || ^3.0.0", "vue@^3.0.0-0 || ^2.6.0", vue@^3.2.0, vue@^3.2.13, vue@^3.5.0, vue@^3.5.13, "vue@>= 3.2.0", vue@>=3, vue@3.5.13:
   version "3.5.13"
   resolved "https://registry.npmjs.org/vue/-/vue-3.5.13.tgz"
   integrity sha512-wmeiSMxkZCSc+PM2w2VRsOYAZC8GdipNFRTsLSfodVqI9mbejKeXEGr8SckuLnrQPGe3oJN5c3K0vpoU9q/wCQ==
