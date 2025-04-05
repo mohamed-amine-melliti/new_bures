@@ -81,13 +81,15 @@
           <!-- Departure -->
           <div>
             <label class="block text-sm font-medium">Point de départ</label>
-            <input v-model="departure" placeholder="Lieu de départ" class="w-full border rounded-md p-2" />
+            <!-- <input v-model="departure" placeholder="Lieu de départ" class="w-full border rounded-md p-2" /> -->
+            <SearchBar />
           </div>
 
           <!-- Destination -->
           <div>
             <label class="block text-sm font-medium">Destination</label>
-            <input v-model="destination" placeholder="Lieu de destination" class="w-full border rounded-md p-2" />
+            <!-- <input v-model="destination" placeholder="Lieu de destination" class="w-full border rounded-md p-2" /> -->
+            <SearchBar :placeholder="'Votre destination'" />
           </div>
 
           <!-- Info -->
@@ -115,7 +117,8 @@
           <div>
             <h4 class="font-semibold text-sm mb-2">Dates</h4>
             <label class="block text-sm mb-1">Heure de départ</label>
-            <RadixDatePicker v-model="departureDate" />
+            <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
 
           <div class="pt-4">
@@ -134,6 +137,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import CarPickerDialog from './CarPickerDialog.vue'
+import SearchBar from '../searchbar/SearchBar.vue'
 
 // Car Selection
 const selectedCar = ref(null)
@@ -180,10 +184,14 @@ const activeTabClass =
 <style scoped>
 /* Completely hide scrollbar */
 .hide-scrollbar {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE 10+ */
 }
+
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+  display: none;
+  /* Chrome, Safari, Edge */
 }
 </style>
