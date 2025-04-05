@@ -1,79 +1,142 @@
-<script setup lang="ts">
-import { TabsContent, TabsIndicator, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
-import SearchBar from '../searchbar/SearchBar';
-</script>
-
 <template>
-  <TabsRoot style="z-index: 999;" class="flex flex-col w-full sm:w-[300px] shadow-sm rounded-lg border" default-value="tab1">
-    <TabsList class="relative shrink-0 flex border-b border-mauve6" aria-label="Manage your account">
-      <TabsIndicator
-        class="absolute px-8 left-0 h-[2px] bottom-0 w-[--reka-tabs-indicator-size] translate-x-[--reka-tabs-indicator-position] translate-y-[1px] rounded-full transition-[width,transform] duration-300">
-        <div class="bg-grass8 w-full h-full" />
-      </TabsIndicator>
-      <TabsTrigger
-        class="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-sm leading-none text-mauve11 select-none  rounded-tl-md  hover:text-grass11 data-[state=active]:text-grass11 outline-none cursor-default focus-visible:relative focus-visible:shadow-[0_0_0_2px] focus-visible:shadow-black"
-        value="tab1">
-        Account
-      </TabsTrigger>
-      <TabsTrigger
-        class="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-sm leading-none text-mauve11 select-none  rounded-tr-md hover:text-grass11 data-[state=active]:text-grass11 outline-none cursor-default focus-visible:relative focus-visible:shadow-[0_0_0_2px] focus-visible:shadow-black"
-        value="tab2">
-        Password
-      </TabsTrigger>
-    </TabsList>
+  <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-4 space-y-4">
+    <!-- Header with Car Picker Trigger -->
+    <div class="p-6">
+      <CarPickerDialog @select="selectedCar = $event">
+        <template #trigger>
+          <!-- Same custom trigger as before -->
+          <!-- ... -->
+        </template>
+      </CarPickerDialog>
+    </div>
 
+    <!-- Tabs -->
+    <div class="flex bg-gray-100 rounded-md overflow-hidden w-full">
+      <button
+        :class="tripType === 'Forfaitaire' ? activeTabClass : tabClass"
+        @click="tripType = 'Forfaitaire'"
+      >
+        Forfaitaire
+      </button>
+      <button
+        :class="tripType === 'Personnalisé' ? activeTabClass : tabClass"
+        @click="tripType = 'Personnalisé'"
+      >
+        Personnalisé
+      </button>
+    </div>
 
-    <TabsContent style="z-index: 999;"
-      class="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black" value="tab1">
-  
-      <fieldset class="mb-[15px] w-full flex flex-col justify-start">
-
-        <SearchBar></SearchBar>
-      </fieldset>
-      <div class="flex justify-end mt-5">
-        <button
-          class="inline-flex items-center justify-center rounded-md px-[15px] text-sm leading-none font-medium h-[35px] bg-green4 text-green11 hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default">
-          Save changes
-        </button>
+    <!-- Forfaitaire Content -->
+    <div v-if="tripType === 'Forfaitaire'" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium">Point de départ</label>
+        <select v-model="forfaitDeparture" class="w-full border rounded-md p-2">
+          <option disabled value="">Choisissez un point</option>
+          <option v-for="point in points" :key="point.value" :value="point.value">
+            {{ point.label }}
+          </option>
+        </select>
       </div>
-    </TabsContent>
 
-
-    <TabsContent style="z-index: 999;"
-      class="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black" value="tab2">
-      <p class="mb-5 !mt-0 text-mauve11 text-sm !leading-normal">
-        Change your password here. After saving, you'll be logged out.
-      </p>
-      <fieldset class="mb-[15px] w-full flex flex-col justify-start">
-        <label class="text-xs leading-none mb-2.5 text-green12 block" for="currentPassword">
-          Current password
-        </label>
-        <input id="currentPassword"
-          class="bg-stone-50 grow shrink-0 rounded-md px-2.5 text-sm leading-none text-grass11 shadow-[0_0_0_1px] shadow-green7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-green8 outline-none"
-          type="password">
-      </fieldset>
-      <fieldset class="mb-[15px] w-full flex flex-col justify-start">
-        <label class="text-xs leading-none mb-2.5 text-green12 block" for="newPassword"> New password </label>
-        <input id="newPassword"
-          class="bg-stone-50 grow shrink-0 rounded-md px-2.5 text-sm leading-none text-grass11 shadow-[0_0_0_1px] shadow-green7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-green8 outline-none"
-          type="password">
-      </fieldset>
-      <fieldset class="mb-[15px] w-full flex flex-col justify-start">
-        <label class="text-xs leading-none mb-2.5 text-green12 block" for="confirmPassword">
-          Confirm password
-        </label>
-        <input id="confirmPassword"
-          class="bg-stone-50 grow shrink-0 rounded-md px-2.5 text-sm leading-none text-grass11 shadow-[0_0_0_1px] shadow-green7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-green8 outline-none"
-          type="password">
-      </fieldset>
-      <div class="flex justify-end mt-5">
-        <button
-          class="inline-flex items-center justify-center rounded-md px-[15px] text-sm leading-none font-medium h-[35px] bg-green4 text-green11 hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default">
-          Change password
-        </button>
+      <div>
+        <label class="block text-sm font-medium">Destination</label>
+        <select v-model="forfaitDestination" class="w-full border rounded-md p-2">
+          <option disabled value="">Choisissez une destination</option>
+          <option v-for="destination in destinations" :key="destination.value" :value="destination.value">
+            {{ destination.label }}
+          </option>
+        </select>
       </div>
-    </TabsContent>
+    </div>
 
+    <!-- Tab Contents -->
+    <div v-if="tripType === 'Forfaitaire'" class="text-center text-gray-400 italic py-8">
+      Aucun contenu pour le moment dans l’onglet <strong>Forfaitaire</strong>.
+    </div>
 
-  </TabsRoot>
+    <div v-if="tripType === 'Personnalisé'" class="space-y-4">
+      <!-- Departure -->
+      <div>
+        <label class="block text-sm font-medium">Point de départ</label>
+        <input v-model="departure" placeholder="Lieu de départ" class="w-full border rounded-md p-2" />
+      </div>
+
+      <!-- Destination -->
+      <div>
+        <label class="block text-sm font-medium">Destination</label>
+        <input v-model="destination" placeholder="Lieu de destination" class="w-full border rounded-md p-2" />
+      </div>
+
+      <!-- Info -->
+      <div>
+        <h4 class="font-semibold text-sm mb-2">Informations</h4>
+        <div class="space-y-2">
+          <div>
+            <label class="block text-sm">Passagers</label>
+            <select v-model="passengers" class="w-full border rounded-md p-2">
+              <option disabled value="">Select</option>
+              <option v-for="p in 7" :key="p">{{ p }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm">Bagages</label>
+            <select v-model="baggage" class="w-full border rounded-md p-2">
+              <option disabled value="">Select</option>
+              <option v-for="b in baggageOptions" :key="b">{{ b }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date Picker -->
+      <div>
+        <h4 class="font-semibold text-sm mb-2">Dates</h4>
+        <label class="block text-sm mb-1">Heure de départ</label>
+        <RadixDatePicker v-model="departureDate" />
+      </div>
+    </div>
+  </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+import CarPickerDialog from './CarPickerDialog.vue'
+
+// Car Selection
+const selectedCar = ref(null)
+
+// Tabs
+const tripType = ref('Forfaitaire')
+
+// Personnalisé values
+const departure = ref('')
+const destination = ref('')
+const passengers = ref('')
+const baggage = ref('')
+const departureDate = ref(null)
+
+// Forfaitaire select values
+const forfaitDeparture = ref('')
+const forfaitDestination = ref('')
+
+// Options
+const points = [
+  { value: 'paris', label: 'Paris' },
+  { value: 'orly', label: 'Orly' },
+  { value: 'roissy_bourget', label: 'Roissy Bourget' },
+  { value: 'cdg', label: 'Charles de Gaulle (CDG)' },
+  { value: 'la_defense', label: 'La Défense' },
+  { value: 'beauvais', label: 'Beauvais' },
+  { value: 'disney', label: 'Disney' }
+]
+
+const destinations = [...points]
+
+const baggageOptions = ['Aucun', '1', '2', '3', '4+']
+
+// Tab styling
+const tabClass =
+  'w-1/2 py-2 text-center text-sm text-gray-600 hover:bg-gray-200 transition'
+const activeTabClass =
+  'w-1/2 py-2 text-center text-sm bg-white font-semibold border border-gray-300'
+</script>
