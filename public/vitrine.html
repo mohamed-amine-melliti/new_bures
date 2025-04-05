@@ -29,6 +29,8 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css" />
 
   <script src="assetsfiles/lftracker_v1_lAxoEaKvq3b4OYGd.js" async=""></script>
   <script async="" src="assetsfiles/dd95d656-5765-42b9-82b5-580201f3a426.js"></script>
@@ -2692,43 +2694,37 @@
         </div>
       </section>
 
-      <section data-theme="inherit" class="testimonials_wrap">
-        <div data-padding-top="large" data-padding-bottom="small" class="testimonials_contain container">
-          <div class="testimonials_title">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold">Nos <br> Véhicules</h1>
 
-          </div>
 
-          <div data-w-id="807363ca-bb89-95c8-05fd-f2bd8d977332" class="w-layout-grid testimonials_component">
+      <!------------------------------------------------------------------------------->
 
-            <!-- Lexus NX 300 Card -->
-
-            <div
-              class="car-card relative bg-purple-100 p-6 rounded-lg shadow-lg max-w-lg mx-auto opacity-0 translate-y-10">
+      <!-- Slider main container -->
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+      
+          <!-- Lexus NX 300 -->
+          <div class="swiper-slide">
+            <div class="car-card relative bg-purple-100 p-6 rounded-lg shadow-lg max-w-lg mx-auto">
               <div class="relative">
-                <img
-                  src="https://images.dealer.com/ddc/vehicles/2020/Lexus/NX%20300/SUV/perspective/front-left/0000_02.png"
-                  alt="Lexus NX 300" class="w-72 h-auto mx-auto">
+                <img src="https://images.dealer.com/ddc/vehicles/2020/Lexus/NX%20300/SUV/perspective/front-left/0000_02.png" alt="Lexus NX 300" class="w-72 h-auto mx-auto">
                 <div class="absolute top-2 left-2 bg-purple-300 p-3 rounded-lg">
-                  <img src="https://cdn.freebiesupply.com/logos/large/2x/lexus-logo-png-transparent.png"
-                    alt="Lexus Logo" class="w-12 h-auto">
+                  <img src="https://cdn.freebiesupply.com/logos/large/2x/lexus-logo-png-transparent.png" alt="Lexus Logo" class="w-12 h-auto">
                 </div>
               </div>
               <div class="text-center mt-4">
                 <h3 class="text-lg font-bold text-gray-800">Lexus NX 300 – Le SUV Premium</h3>
                 <p class="text-gray-700 text-sm mt-2">
-                  Découvrez le Lexus NX 300, un SUV haut de gamme qui allie élégance, confort et performances pour vos
-                  trajets en VTC.
+                  Découvrez le Lexus NX 300, un SUV haut de gamme qui allie élégance, confort et performances pour vos trajets en VTC.
                 </p>
               </div>
             </div>
-
-            <!-- Kia Niro Card -->
-            <div
-              class="car-card relative bg-yellow-100 p-6 rounded-lg shadow-lg max-w-lg mx-auto opacity-0 translate-y-10">
+          </div>
+      
+          <!-- Kia Niro -->
+          <div class="swiper-slide">
+            <div class="car-card relative bg-yellow-100 p-6 rounded-lg shadow-lg max-w-lg mx-auto">
               <div class="relative">
-                <img src="https://www.pngplay.com/wp-content/uploads/13/Kia-Niro-EV-PNG-Photos.png" alt="Kia Niro"
-                  class="w-72 h-auto mx-auto">
+                <img src="https://www.pngplay.com/wp-content/uploads/13/Kia-Niro-EV-PNG-Photos.png" alt="Kia Niro" class="w-72 h-auto mx-auto">
                 <div class="absolute top-2 left-2 bg-yellow-300 p-3 rounded-lg">
                   <img src="assetsfiles/kialogo.png" alt="Kia Logo" class="w-12 h-auto">
                 </div>
@@ -2740,393 +2736,138 @@
                 </p>
               </div>
             </div>
-
-
-
+          </div>
+      
+          <!-- Mercedes Vito -->
+          <div class="swiper-slide">
             <div class="relative bg-green-100 p-6 rounded-lg shadow-lg max-w-lg mx-auto">
-              <!-- Car Image (Bigger) with Logo Overlay -->
               <div class="relative">
-                <img src="https://catalogue.automobile.tn/big/2024/05/47140.png?t=1715188513" alt="Mercedes Vito"
-                  class="w-80 h-auto mx-auto"> <!-- Increased width -->
-
-                <!-- Logo Box (Overlay on Car Image) -->
+                <img src="https://catalogue.automobile.tn/big/2024/05/47140.png?t=1715188513" alt="Mercedes Vito" class="w-80 h-auto mx-auto">
                 <div class="absolute top-2 left-2 bg-green-300 p-3 rounded-lg">
-                  <img src="https://cdn.freebiesupply.com/logos/large/2x/mercedes-benz-1-logo-png-transparent.png"
-                    alt="Mercedes Logo" class="w-12 h-auto">
+                  <img src="https://cdn.freebiesupply.com/logos/large/2x/mercedes-benz-1-logo-png-transparent.png" alt="Mercedes Logo" class="w-12 h-auto">
                 </div>
               </div>
-
-              <!-- Testimonial Content (Bigger Text) -->
               <div class="text-center mt-4">
                 <h3 class="text-lg font-bold text-gray-800">Mercedes Vito – L’Excellence du Transport en Groupe</h3>
-                <!-- Bigger title -->
                 <p class="text-gray-700 text-sm mt-2">
-                  Voyagez avec élégance et confort à bord du Mercedes Vito, un van haut de gamme conçu pour les trajets
-                  VTC en groupe.
+                  Voyagez avec élégance et confort à bord du Mercedes Vito, un van haut de gamme conçu pour les trajets VTC en groupe.
                 </p>
               </div>
             </div>
-
-            <div class="relative bg-yellow-100 p-6 rounded-lg shadow-lg max-w-lg mx-auto">
-              <!-- Car Image (Bigger) with Logo Overlay -->
-              <div class="relative">
-                <img src="https://catalogue.automobile.tn/big/2023/04/46056.png?t=1727028068" alt="Toyota RAV4"
-                  class="w-80 h-auto mx-auto"> <!-- Increased width -->
-
-                <!-- Logo Box (Overlay on Car Image) -->
-                <div class="absolute top-2 left-2 bg-yellow-300 p-3 rounded-lg">
-                  <img
-                    src="https://www.transparentpng.com/download/toyota-logo/JPhuJt-toyota-logo-transparent-image.png"
-                    alt="Toyota Logo" class="w-12 h-auto">
-                </div>
-              </div>
-
-              <!-- Testimonial Content (Bigger Text) -->
-              <div class="text-center mt-4">
-                <h3 class="text-lg font-bold text-gray-800">Toyota RAV4 – Confort & Performance pour vos Trajets VTC
-                </h3> <!-- Bigger title -->
-                <p class="text-gray-700 text-sm mt-2">
-                  Optez pour une expérience de transport premium et polyvalente avec le Toyota RAV4, un SUV spacieux,
-                  élégant et fiable, parfait pour vos déplacements en VTC.
-                </p>
-              </div>
-            </div>
-
-            <div class="relative bg-yellow-100 p-6 rounded-lg shadow-lg max-w-lg mx-auto">
-              <!-- Car Image (Bigger) with Logo Overlay -->
-              <div class="relative">
-                <img src="https://catalogue.automobile.tn/big/2024/05/47140.png?t=1715188513" alt="Mercedes Classe V"
-                  class="w-80 h-auto mx-auto"> <!-- Increased width -->
-
-                <!-- Logo Box (Overlay on Car Image) -->
-                <div class="absolute top-2 left-2 bg-yellow-300 p-3 rounded-lg">
-                  <img src="https://cdn.freebiesupply.com/logos/large/2x/mercedes-benz-1-logo-png-transparent.png"
-                    alt="Mercedes Logo" class="w-12 h-auto">
-                </div>
-              </div>
-
-              <!-- Testimonial Content (Bigger Text) -->
-              <div class="text-center mt-4">
-                <h3 class="text-lg font-bold text-gray-800">Mercedes Classe V – Le Luxe et l'Espace pour vos Trajets en
-                  VTC</h3> <!-- Bigger title -->
-                <p class="text-gray-700 text-sm mt-2">
-                  Voyagez avec élégance et confort à bord du Mercedes Classe V, un van premium conçu pour offrir une
-                  expérience de transport haut de gamme.
-                </p>
-              </div>
-            </div>
-
           </div>
+      
+          <!-- Toyota RAV4 -->
+          <div class="swiper-slide">
+            <div class="relative bg-yellow-100 p-6 rounded-lg shadow-lg max-w-lg mx-auto">
+              <div class="relative">
+                <img src="https://catalogue.automobile.tn/big/2023/04/46056.png?t=1727028068" alt="Toyota RAV4" class="w-80 h-auto mx-auto">
+                <div class="absolute top-2 left-2 bg-yellow-300 p-3 rounded-lg">
+                  <img src="https://www.transparentpng.com/download/toyota-logo/JPhuJt-toyota-logo-transparent-image.png" alt="Toyota Logo" class="w-12 h-auto">
+                </div>
+              </div>
+              <div class="text-center mt-4">
+                <h3 class="text-lg font-bold text-gray-800">Toyota RAV4 – Confort & Performance pour vos Trajets VTC</h3>
+                <p class="text-gray-700 text-sm mt-2">
+                  Optez pour une expérience de transport premium et polyvalente avec le Toyota RAV4.
+                </p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Mercedes Classe V -->
+          <div class="swiper-slide">
+            <div class="relative bg-yellow-100 p-6 rounded-lg shadow-lg max-w-lg mx-auto">
+              <div class="relative">
+                <img src="https://catalogue.automobile.tn/big/2024/05/47140.png?t=1715188513" alt="Mercedes Classe V" class="w-80 h-auto mx-auto">
+                <div class="absolute top-2 left-2 bg-yellow-300 p-3 rounded-lg">
+                  <img src="https://cdn.freebiesupply.com/logos/large/2x/mercedes-benz-1-logo-png-transparent.png" alt="Mercedes Logo" class="w-12 h-auto">
+                </div>
+              </div>
+              <div class="text-center mt-4">
+                <h3 class="text-lg font-bold text-gray-800">Mercedes Classe V – Le Luxe et l'Espace</h3>
+                <p class="text-gray-700 text-sm mt-2">
+                  Voyagez avec élégance et confort à bord du Mercedes Classe V, un van premium pour une expérience haut de gamme.
+                </p>
+              </div>
+            </div>
+          </div>
+      
         </div>
-      </section>
-
-
-      <!------------------------------------------------------------------------------->
-      <div class="container">
-        <aside class="carousel">
-          <div class="carousel__wrapper">
-            <div class="item" id="slide-0"><img src="https://assets.codepen.io/108082/jake-and-fin-1.jpg" alt=""
-                width="418" height="418" /></div>
-            <div class="item" id="slide-1"><img src="https://assets.codepen.io/108082/jake-and-fin-2.jpg" alt=""
-                width="418" height="418" /></div>
-            <div class="item" id="slide-2"><img src="https://assets.codepen.io/108082/jake-and-fin-3.jpg" alt=""
-                width="418" height="418" /></div>
-            <div class="item" id="slide-3"><img src="https://assets.codepen.io/108082/jake-and-fin-4.jpg" alt=""
-                width="418" height="418" /></div>
-            <div class="item" id="slide-4"><img src="https://assets.codepen.io/108082/jake-and-fin-5.jpg" alt=""
-                width="418" height="418" /></div>
-            <div class="item" id="slide-5"><img src="https://assets.codepen.io/108082/jake-and-fin-6.jpg" alt=""
-                width="418" height="418" /></div>
-            <div class="item" id="slide-6"><img src="https://assets.codepen.io/108082/jake-and-fin-7.jpg" alt=""
-                width="418" height="418" /></div>
-          </div>
-        </aside>
-        <article class="instagram">
-
-          <section class="instagram__media">
-            <div class="img"></div>
-          </section>
-
-        </article>
+      
+        <!-- Pagination (if needed) -->
+        <div class="swiper-pagination"></div>
       </div>
+      
 
       <style>
-        @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
-
-        @keyframes carousel-animate {
-          0% {
-            visibility: hidden;
-            opacity: 0;
-            transform: translateX(200%) scale(0.7);
-          }
-
-          3%,
-          14.285714285714286% {
-            visibility: visible;
-            opacity: 0.8;
-            transform: translateX(100%) scale(0.9);
-          }
-
-          17.285714285714285%,
-          28.57142857142857% {
-            visibility: visible;
-            opacity: 1;
-            transform: translateX(0) scale(1);
-          }
-
-          31.57142857142857%,
-          42.857142857142854% {
-            visibility: visible;
-            opacity: 0.8;
-            transform: translateX(-100%) scale(0.9);
-          }
-
-          45.857142857142854% {
-            visibility: visible;
-            opacity: 0;
-            transform: translateX(-200%) scale(0.9);
-          }
-
-          100% {
-            visibility: hidden;
-            opacity: 0;
-            transform: translateX(-200%) scale(0.7);
-          }
+        .swiper-container {
+          width: 100%;
+          padding-top: 50px;
+          padding-bottom: 50px;
         }
 
-        :root {
-          --light: 0;
-          --max-width-post: 420px;
-          --primary: hsl(calc(64 + 220 * var(--light)),
-              calc(77% - 7% * var(--light)),
-              calc(79% - 56% * var(--light)));
-          --bg: hsl(calc(284 - 220 * var(--light)),
-              calc(70% + 7% * var(--light)),
-              calc(23% + 56% * var(--light)));
-          --text-primary: hsl(calc(60 * var(--light)),
-              calc(19% * var(--light)),
-              calc(97% - 89% * var(--light)));
-          --font-size-sm: clamp(0.7rem, 0.91vw + 0.47rem, 1.2rem);
-          --font-size-base: clamp(0.88rem, 1.14vw + 0.59rem, 1.5rem);
-          --font-size-md: clamp(1.09rem, 1.42vw + 0.74rem, 1.88rem);
-          --font-size-lg: clamp(1.37rem, 1.78vw + 0.92rem, 2.34rem);
-          --font-size-xl: clamp(1.71rem, 2.22vw + 1.15rem, 2.93rem);
-          --font-size-xxl: clamp(2.14rem, 2.77vw + 1.44rem, 3.66rem);
-          --font-size-xxxl: clamp(2.67rem, 3.47vw + 1.8rem, 4.58rem);
+        .swiper-slide {
+          background-position: center;
+          background-size: cover;
+          width: 320px;
+          background-color: #fff;
+          overflow: hidden;
+          border-radius: 8px;
         }
 
-        *,
-        *::after,
-        *::before {
-          box-sizing: border-box;
-        }
-
-        body {
-          width: 100vw;
-          height: 100vh;
-          font-family: "Montserrat", sans-serif;
-          color: var(--text-primary);
+        .picture {
+          width: 320px;
+          height: 320px;
           overflow: hidden;
         }
 
-        @supports (height: 100dvh) {
-          body {
-            height: 100dvh;
-          }
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-          margin: 0;
-        }
-
-        .container {
-          --container-padding-horizontal: 32px;
-          position: relative;
-          padding-inline: var(--container-padding-horizontal);
-          display: grid;
-          place-items: center;
-          height: 100%;
-        }
-
-        .carousel {
-          pointer-events: none;
-          position: absolute;
-          padding-block-start: 67px;
-          padding-block-end: max(24px, calc(29px + var(--font-size-md)));
-          perspective: 100px;
+        .picture img {
+          display: block;
           width: 100%;
-        }
-
-        @media (max-width: 568px) {
-          .carousel {
-            padding-block-end: 52px;
-          }
-        }
-
-        .carousel__wrapper {
-          position: relative;
-          display: flex;
-          justify-content: center;
-          height: 61.2vh;
-        }
-
-        .carousel .item {
-          position: absolute;
-          max-width: 418px;
           height: 100%;
-          margin-inline: var(--container-padding-horizontal);
-          opacity: 0;
-          will-change: transform, opacity;
-          animation: carousel-animate 27s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-        }
-
-        @media (max-width: 568px) {
-          .carousel .item {
-            margin-inline: calc(var(--container-padding-horizontal) + 1px);
-          }
-        }
-
-        .carousel .item:nth-child(1) {
-          animation-delay: calc(3.857142857142857s * -1);
-        }
-
-        .carousel .item:nth-child(2) {
-          animation-delay: calc(3.857142857142857s * 0);
-        }
-
-        .carousel .item:nth-child(3) {
-          animation-delay: calc(3.857142857142857s * 1);
-        }
-
-        .carousel .item:nth-child(4) {
-          animation-delay: calc(3.857142857142857s * 2);
-        }
-
-        .carousel .item:nth-child(5) {
-          animation-delay: calc(3.857142857142857s * 3);
-        }
-
-        .carousel .item:nth-child(6) {
-          animation-delay: calc(3.857142857142857s * 4);
-        }
-
-        .carousel .item:nth-child(7) {
-          animation-delay: calc(3.857142857142857s * 5);
-        }
-
-        .carousel .item:last-child {
-          animation-delay: calc(-3.857142857142857s * 2);
-        }
-
-        .carousel img {
-          max-width: 100%;
           object-fit: cover;
-          height: 100%;
         }
 
-        .instagram {
-          --pading-horizontal: 16px;
-          --border: 1px solid var(--primary);
-          max-width: var(--max-width-post);
-          width: 100%;
-          border: var(--border);
-          border-radius: 20px;
+        .detail {
+          padding: 25px 20px;
+          font-weight: 600;
+          text-align: center;
         }
 
-        .instagram__header {
-          padding-block: 12px;
-          border-bottom: var(--border);
-        }
-
-        .instagram__header figure {
-          padding-block: 0;
-          padding-inline: var(--pading-horizontal);
+        .detail h3 {
           margin: 0;
-          display: flex;
-          align-items: center;
+          font-size: 20px;
         }
 
-        .instagram__header img {
-          border-radius: 50%;
-          object-fit: cover;
-          border: var(--border);
-          margin-inline-end: 8px;
-        }
-
-        .instagram__media {
-          display: flex;
-          border-bottom: var(--border);
-        }
-
-        .instagram__media .img {
-          max-width: 100%;
-          height: 61.2vh;
-        }
-
-        .instagram__buttons {
-          padding-block: 12px;
-          padding-inline: var(--pading-horizontal);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .instagram__buttons .left {
-          display: flex;
-          align-items: center;
-        }
-
-        .instagram__buttons .left svg:nth-of-type(2) {
-          margin-inline: 12px;
-        }
-
-        .instagram__icon {
-          cursor: pointer;
-          width: 1em;
-          height: 1em;
-          font-size: var(--font-size-md);
-          min-width: 24px;
-          min-height: 24px;
-        }
-
-        .instagram__icon:hover {
-          opacity: 0.7;
-        }
-
-        .instagram__icon path {
-          stroke: var(--primary);
-          stroke-linejoin: round;
-        }
-
-        .instagram__icon--comment path {
-          stroke-width: 2;
-        }
-
-        .instagram__icon--message {
-          margin-block-start: 3px;
-        }
-
-        .instagram__icon--message path,
-        .instagram__icon--saved path {
-          stroke-width: 2;
+        .detail span {
+          display: block;
+          font-size: 16px;
+          color: #f44336;
         }
       </style>
 
 
-      <script>
-        let CHECKED = false;
 
-        document.addEventListener("pointerdown", (e) => {
-          CHECKED = !CHECKED;
-          document.documentElement.style.setProperty("--light", CHECKED ? 1 : 0);
+      <script>
+        var swiper = new Swiper(".swiper-container", {
+          effect: "coverflow",
+          grabCursor: true,
+          centeredSlides: true,
+          slidesPerView: "auto",
+          coverflowEffect: {
+            rotate: 20,
+            stretch: 0,
+            depth: 350,
+            modifier: 1,
+            slideShadows: true
+          },
+          pagination: {
+            el: ".swiper-pagination"
+          }
         });
 
       </script>
+
       <!------------------------------------------------------------------------------->
 
       <section data-theme="inherit" class="overview_wrap">
@@ -3176,7 +2917,7 @@
                 sizes="(max-width: 479px) 93vw, (max-width: 767px) 82vw, (max-width: 991px) 42vw, 50vw"
                 srcset="assetsfiles/newscreenofreservation.png 500w, assetsfiles/newscreenofreservation.png 800w, assetsfiles/newscreenofreservation.png 1080w, assetsfiles/newscreenofreservation.png 1128w"
                 alt="A graphic representing the ability to choose categories that are important to you"
-                class="img--ca1"></div>
+                style="max-width: 300px; height: auto;" class="img--ca1" /></div>
           </div>
           <div data-w-id="2d7cf8aa-384f-1f2c-b486-d3d989f4faa6" class="overview_content">
             <div class="overview_copy">
