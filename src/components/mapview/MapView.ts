@@ -43,8 +43,8 @@ export default defineComponent({
             // Example of locations (replace with real data)
             const locations = [
                 { lng: 2.3522, lat: 48.8566, name: "Paris" },
-                { lng: 4.8357, lat: 45.7640, name: "Lyon" },
-                { lng: -1.5536, lat: 47.2184, name: "Nantes" },
+              //  { lng: 4.8357, lat: 45.7640, name: "Lyon" },
+               // { lng: -1.5536, lat: 47.2184, name: "Nantes" },
             ];
 
             // Filter locations to only include those inside France
