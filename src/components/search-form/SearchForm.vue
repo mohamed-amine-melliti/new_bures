@@ -69,10 +69,34 @@
             </select>
           </div>
           <div class="pt-4">
-            <button @click="handleReservation('personnalise')"
-              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow transition">
-              Réserver
-            </button>
+            <ToastProvider>
+              <button
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow transition"
+                @click="handleClick">
+                Réserver
+              </button>
+
+              <ToastRoot v-model:open="open"
+                class="bg-white rounded-md shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut">
+                <ToastTitle class="[grid-area:_title] mb-[5px] font-medium text-slate12 text-[15px]">
+                  Scheduled: Catch up
+                </ToastTitle>
+                <ToastDescription as-child>
+                  <time class="[grid-area:_description] m-0 text-slate11 text-[13px] leading-[1.3]"
+                    :dateTime="eventDateRef.toISOString()">
+                    {{ prettyDate(eventDateRef) }}
+                  </time>
+                </ToastDescription>
+                <ToastAction class="[grid-area:_action]" as-child alt-text="Goto schedule to undo">
+                  <button
+                    class="inline-flex items-center justify-center rounded font-medium text-xs px-[10px] leading-[25px] h-[25px] bg-green2 text-green11 shadow-[inset_0_0_0_1px] shadow-green7 hover:shadow-[inset_0_0_0_1px] hover:shadow-green8 focus:shadow-[0_0_0_2px] focus:shadow-green8">
+                    Undo
+                  </button>
+                </ToastAction>
+              </ToastRoot>
+              <ToastViewport
+                class="[--viewport-padding:_25px] fixed bottom-0 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] outline-none" />
+            </ToastProvider>
           </div>
         </div>
         <!-- Personnalisé Content -->
@@ -122,10 +146,34 @@
           </div>
 
           <div class="pt-4">
-            <button @click="handleReservation('personnalise')"
-              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow transition">
-              Réserver
-            </button>
+            <ToastProvider>
+              <Button
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow transition"
+                @click="handleClick">
+                Réserver
+              </Button>
+
+              <ToastRoot v-model:open="open"
+                class="bg-white rounded-md shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut">
+                <ToastTitle class="[grid-area:_title] mb-[5px] font-medium text-slate12 text-[15px]">
+                  Réservation Programmé 
+                </ToastTitle>
+                <ToastDescription as-child>
+                  <time class="[grid-area:_description] m-0 text-slate11 text-[13px] leading-[1.3]"
+                    :dateTime="eventDateRef.toISOString()">
+                    {{ prettyDate(eventDateRef) }}
+                  </time>
+                </ToastDescription>
+                <ToastAction class="[grid-area:_action]" as-child alt-text="Goto schedule to undo">
+                  <button
+                    class="inline-flex items-center justify-center rounded font-medium text-xs px-[10px] leading-[25px] h-[25px] bg-green2 text-green11 shadow-[inset_0_0_0_1px] shadow-green7 hover:shadow-[inset_0_0_0_1px] hover:shadow-green8 focus:shadow-[0_0_0_2px] focus:shadow-green8">
+                    Undo
+                  </button>
+                </ToastAction>
+              </ToastRoot>
+              <ToastViewport
+                class="[--viewport-padding:_25px] fixed bottom-0 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] outline-none" />
+            </ToastProvider>
           </div>
         </div>
       </div>
@@ -136,6 +184,49 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { ToastAction, ToastDescription, ToastProvider, ToastRoot, ToastTitle, ToastViewport } from 'radix-vue'
+const open = ref(false)
+const eventDateRef = ref(new Date())
+const timerRef = ref(0)
+
+
+
+function oneWeekAway() {
+  const now = new Date()
+  now.setDate(now.getDate() + 7)
+  return now
+}
+
+function prettyDate(date: Date) {
+  return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'short' }).format(date)
+}
+
+function generateReservationCode(): string {
+  return 'VTC-' + Math.random().toString(36).substring(2, 8).toUpperCase()
+}
+
+function handleClick(type: 'forfait' | 'personnalise') {
+  open.value = false
+  clearTimeout(timerRef.value)
+
+  timerRef.value = window.setTimeout(() => {
+    eventDateRef.value = oneWeekAway()
+    open.value = true
+    window.clearTimeout(timerRef.value)
+ 
+    const code = generateReservationCode()
+    timerRef.value = window.setTimeout(() => {
+    eventDateRef.value = oneWeekAway()
+    open.value = true
+  }, 100)
+
+    console.log('Type de réservation:', type)
+    console.log('Code:', code)
+    console.log('Date estimée:', prettyDate(eventDateRef.value!))
+  }, 100)
+}
+
+
 import CarPickerDialog from './CarPickerDialog.vue'
 import SearchBar from '../searchbar/SearchBar.vue'
 
