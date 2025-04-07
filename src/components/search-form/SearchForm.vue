@@ -56,7 +56,6 @@
                 <ToastDescription as-child>
                   <time class="[grid-area:_description] m-0 text-slate11 text-[13px] leading-[1.3]"
                     :dateTime="eventDateRef.toISOString()">
-                    {{ prettyDate(eventDateRef) }}
                   </time>
                 </ToastDescription>
                 <ToastAction class="[grid-area:_action]" as-child alt-text="Goto schedule to undo">
@@ -84,7 +83,6 @@
           <div>
             <label class="block text-sm font-medium">Destination</label>
             <!-- <input v-model="destination" placeholder="Lieu de destination" class="w-full border rounded-md p-2" /> -->
-            <SearchBar :placeholder="'Votre destination'" />
             <SearchBarDesination></SearchBarDesination>
           </div>
           <div class="pt-4">
@@ -128,6 +126,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useStore } from 'vuex'
 
 // 🔹 External UI Components
 import { 
@@ -146,6 +145,7 @@ import InfoPassager from './InfoPassager.vue'
 import { points } from '@/interfaces/points'
 import SearchBarDesination from '../searchbardestination/SearchBarDesination.vue'
 import CarPickerTrigger from './CarPickerTrigger.vue'
+
 // =============================
 // 🔸 Toast State & Logic
 // =============================
@@ -167,6 +167,19 @@ function generateReservationCode(): string {
   return 'VTC-' + Math.random().toString(36).substring(2, 8).toUpperCase()
 }
 
+// Vuex Store
+const store = useStore()
+
+interface PassengerInfo {
+  passengers: string
+  baggage: string
+}
+
+const passengerInfo = ref<PassengerInfo>({
+  passengers: '',
+  baggage: ''
+})
+
 function handleClick(type: 'forfait' | 'personnalise') {
   open.value = false
   clearTimeout(timerRef.value)
@@ -176,10 +189,25 @@ function handleClick(type: 'forfait' | 'personnalise') {
     open.value = true
 
     const code = generateReservationCode()
+    const reservation = {
+      type,
+      code,
+      car: selectedCar.value,
+      passengers: passengerInfo.value.passengers,
+      baggage: passengerInfo.value.baggage,
+      departureDate: eventDateRef.value.toISOString(),
+      tripType: tripType.value,
+      forfaitDeparture: forfaitDeparture.value,
+      forfaitDestination: forfaitDestination.value,
+    }
+
+    // ✅ Save to Vuex Store
+    store.commit('reservation/saveReservation', reservation)
 
     console.log('Type de réservation:', type)
     console.log('Code:', code)
     console.log('Date estimée:', prettyDate(eventDateRef.value))
+    console.log('Réservation:', reservation)
   }, 100)
 }
 
@@ -187,6 +215,7 @@ function handleClick(type: 'forfait' | 'personnalise') {
 // 🔸 Reservation Tabs
 // =============================
 const tripType = ref('Forfaitaire')
+const departureDate = ref(null)
 
 const tabClass =
   'w-1/2 py-2 text-center text-sm text-gray-600 hover:bg-gray-200 transition'
@@ -204,8 +233,7 @@ const selectedCar = ref(null)
 const forfaitDeparture = ref('')
 const forfaitDestination = ref('')
 
-
-
+// Destination options
 const destinations = [...points]
 
 // =============================
@@ -216,6 +244,7 @@ function handleDateChange(date: string) {
 }
 
 function handleInfoUpdate(data: { passengers: string; baggage: string }) {
+  passengerInfo.value = data
   console.log('Received from child:', data)
 }
 </script>
