@@ -48,7 +48,7 @@
         </div>
         <!-- Forfaitaire Content -->
 
-        <div v-if="tripType === 'Forfaitaire'" class="text-center text-gray-400 italic py-8">
+        <div v-if="tripType === 'Forfaitaire'" class="text-center text-black-400 italic py-8">
           <div>
             <label class="block text-sm font-medium">Point de départ</label>
             <select v-model="forfaitDeparture" class="w-full border rounded-md p-2">
@@ -161,6 +161,9 @@
                 <ToastDescription as-child>
                   <time class="[grid-area:_description] m-0 text-slate11 text-[13px] leading-[1.3]"
                     :dateTime="eventDateRef.toISOString()">
+
+                    Code Réservation : {{ generateReservationCode() }}
+                    <br>
                     {{ prettyDate(eventDateRef) }}
                   </time>
                 </ToastDescription>
