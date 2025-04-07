@@ -37,10 +37,10 @@
           </CarPickerDialog>
         </div>
         <!-- Info -->
-        <InfoPassager></InfoPassager>
+        <InfoPassager  @update:info="handleInfoUpdate"></InfoPassager>
 
         <!-- Date Picker -->
-        <DateDepartPicker></DateDepartPicker>
+        <DateDepartPicker @update:departureDate="handleDateChange"></DateDepartPicker>
 
         <!-- Tabs -->
         <div class="flex bg-gray-100 rounded-md overflow-hidden w-full">
@@ -164,20 +164,38 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ToastAction, ToastDescription, ToastProvider, ToastRoot, ToastTitle, ToastViewport } from 'radix-vue'
 
+// 🔹 External UI Components
+import { 
+  ToastAction, 
+  ToastDescription, 
+  ToastProvider, 
+  ToastRoot, 
+  ToastTitle, 
+  ToastViewport 
+} from 'radix-vue'
+
+// 🔹 Internal Components
 import DateDepartPicker from './DateDepartPicker.vue'
+import CarPickerDialog from './CarPickerDialog.vue'
+import SearchBar from '../searchbar/SearchBar.vue'
+import InfoPassager from './InfoPassager.vue'
+import { points } from '@/interfaces/points'
+
+// =============================
+// 🔸 Toast State & Logic
+// =============================
 const open = ref(false)
 const eventDateRef = ref(new Date())
 const timerRef = ref(0)
 
-function oneWeekAway() {
+function oneWeekAway(): Date {
   const now = new Date()
   now.setDate(now.getDate() + 7)
   return now
 }
 
-function prettyDate(date: Date) {
+function prettyDate(date: Date): string {
   return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'short' }).format(date)
 }
 
@@ -192,62 +210,52 @@ function handleClick(type: 'forfait' | 'personnalise') {
   timerRef.value = window.setTimeout(() => {
     eventDateRef.value = oneWeekAway()
     open.value = true
-    window.clearTimeout(timerRef.value)
 
     const code = generateReservationCode()
-    timerRef.value = window.setTimeout(() => {
-      eventDateRef.value = oneWeekAway()
-      open.value = true
-    }, 100)
 
     console.log('Type de réservation:', type)
     console.log('Code:', code)
-    console.log('Date estimée:', prettyDate(eventDateRef.value!))
+    console.log('Date estimée:', prettyDate(eventDateRef.value))
   }, 100)
 }
 
-
-import CarPickerDialog from './CarPickerDialog.vue'
-import SearchBar from '../searchbar/SearchBar.vue'
-import InfoPassager from './InfoPassager.vue'
-
-// Car Selection
-const selectedCar = ref(null)
-
-// Tabs
+// =============================
+// 🔸 Reservation Tabs
+// =============================
 const tripType = ref('Forfaitaire')
 
-// Personnalisé values
-const departure = ref('')
-const destination = ref('')
-const passengers = ref('')
-const baggage = ref('')
-const departureDate = ref(null)
-
-// Forfaitaire select values
-const forfaitDeparture = ref('')
-const forfaitDestination = ref('')
-
-// Options
-const points = [
-  { value: 'paris', label: 'Paris' },
-  { value: 'orly', label: 'Orly' },
-  { value: 'roissy_bourget', label: 'Roissy Bourget' },
-  { value: 'cdg', label: 'Charles de Gaulle (CDG)' },
-  { value: 'la_defense', label: 'La Défense' },
-  { value: 'beauvais', label: 'Beauvais' },
-  { value: 'disney', label: 'Disney' }
-]
-
-const destinations = [...points]
-
-
-// Tab styling
 const tabClass =
   'w-1/2 py-2 text-center text-sm text-gray-600 hover:bg-gray-200 transition'
 const activeTabClass =
   'w-1/2 py-2 text-center text-sm bg-white font-semibold border border-gray-300'
+
+// =============================
+// 🔸 Car Selection
+// =============================
+const selectedCar = ref(null)
+
+// =============================
+// 🔸 Forfaitaire Data
+// =============================
+const forfaitDeparture = ref('')
+const forfaitDestination = ref('')
+
+
+
+const destinations = [...points]
+
+// =============================
+// 🔸 Event Handlers from Children
+// =============================
+function handleDateChange(date: string) {
+  console.log('Departure date selected:', date)
+}
+
+function handleInfoUpdate(data: { passengers: string; baggage: string }) {
+  console.log('Received from child:', data)
+}
 </script>
+
 
 
 
