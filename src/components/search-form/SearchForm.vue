@@ -36,7 +36,37 @@
             </template>
           </CarPickerDialog>
         </div>
+        
+          <!-- Info -->
+          <div>
+            <h4 class="font-semibold text-sm mb-2">Informations</h4>
+            <div class="space-y-2">
+              <div>
+                <label class="block text-sm">Passagers</label>
+                <select v-model="passengers" class="w-full border rounded-md p-2">
+                  <option disabled value="">Select</option>
+                  <option v-for="p in 7" :key="p">{{ p }}</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm">Bagages</label>
+                <select v-model="baggage" class="w-full border rounded-md p-2">
+                  <option disabled value="">Select</option>
+                  <option v-for="b in baggageOptions" :key="b">{{ b }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
 
+          <!-- Date Picker -->
+          <div>
+            <h4 class="font-semibold text-sm mb-2">Dates</h4>
+            <label class="block text-sm mb-1">Heure de départ</label>
+            <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          
         <!-- Tabs -->
         <div class="flex bg-gray-100 rounded-md overflow-hidden w-full">
           <button :class="tripType === 'Forfaitaire' ? activeTabClass : tabClass" @click="tripType = 'Forfaitaire'">
@@ -47,7 +77,6 @@
           </button>
         </div>
         <!-- Forfaitaire Content -->
-
         <div v-if="tripType === 'Forfaitaire'" class="text-center text-black-400 italic py-8">
           <div>
             <label class="block text-sm font-medium">Point de départ</label>
@@ -68,6 +97,8 @@
               </option>
             </select>
           </div>
+
+          
           <div class="pt-4">
             <ToastProvider>
               <button
@@ -100,7 +131,6 @@
           </div>
         </div>
         <!-- Personnalisé Content -->
-
         <div v-if="tripType === 'Personnalisé'" class="space-y-4">
           <!-- Departure -->
           <div>
@@ -116,34 +146,6 @@
             <SearchBar :placeholder="'Votre destination'" />
           </div>
 
-          <!-- Info -->
-          <div>
-            <h4 class="font-semibold text-sm mb-2">Informations</h4>
-            <div class="space-y-2">
-              <div>
-                <label class="block text-sm">Passagers</label>
-                <select v-model="passengers" class="w-full border rounded-md p-2">
-                  <option disabled value="">Select</option>
-                  <option v-for="p in 7" :key="p">{{ p }}</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm">Bagages</label>
-                <select v-model="baggage" class="w-full border rounded-md p-2">
-                  <option disabled value="">Select</option>
-                  <option v-for="b in baggageOptions" :key="b">{{ b }}</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- Date Picker -->
-          <div>
-            <h4 class="font-semibold text-sm mb-2">Dates</h4>
-            <label class="block text-sm mb-1">Heure de départ</label>
-            <input type="datetime-local" id="birthdaytime" name="birthdaytime"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-          </div>
 
           <div class="pt-4">
             <ToastProvider>
@@ -179,9 +181,10 @@
             </ToastProvider>
           </div>
         </div>
+
+        
       </div>
     </div>
-
   </div>
 </template>
 
