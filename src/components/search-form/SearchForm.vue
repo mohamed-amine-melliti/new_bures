@@ -36,37 +36,12 @@
             </template>
           </CarPickerDialog>
         </div>
-        
-          <!-- Info -->
-          <div>
-            <h4 class="font-semibold text-sm mb-2">Informations</h4>
-            <div class="space-y-2">
-              <div>
-                <label class="block text-sm">Passagers</label>
-                <select v-model="passengers" class="w-full border rounded-md p-2">
-                  <option disabled value="">Select</option>
-                  <option v-for="p in 7" :key="p">{{ p }}</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm">Bagages</label>
-                <select v-model="baggage" class="w-full border rounded-md p-2">
-                  <option disabled value="">Select</option>
-                  <option v-for="b in baggageOptions" :key="b">{{ b }}</option>
-                </select>
-              </div>
-            </div>
-          </div>
+        <!-- Info -->
+        <InfoPassager></InfoPassager>
 
-          <!-- Date Picker -->
-          <div>
-            <h4 class="font-semibold text-sm mb-2">Dates</h4>
-            <label class="block text-sm mb-1">Heure de départ</label>
-            <input type="datetime-local" id="birthdaytime" name="birthdaytime"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-          </div>
+        <!-- Date Picker -->
+        <DateDepartPicker></DateDepartPicker>
 
-          
         <!-- Tabs -->
         <div class="flex bg-gray-100 rounded-md overflow-hidden w-full">
           <button :class="tripType === 'Forfaitaire' ? activeTabClass : tabClass" @click="tripType = 'Forfaitaire'">
@@ -98,7 +73,7 @@
             </select>
           </div>
 
-          
+
           <div class="pt-4">
             <ToastProvider>
               <button
@@ -158,7 +133,7 @@
               <ToastRoot v-model:open="open"
                 class="bg-white rounded-md shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut">
                 <ToastTitle class="[grid-area:_title] mb-[5px] font-medium text-slate12 text-[15px]">
-                  Réservation Programmé 
+                  Réservation Programmé
                 </ToastTitle>
                 <ToastDescription as-child>
                   <time class="[grid-area:_description] m-0 text-slate11 text-[13px] leading-[1.3]"
@@ -182,7 +157,6 @@
           </div>
         </div>
 
-        
       </div>
     </div>
   </div>
@@ -191,11 +165,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ToastAction, ToastDescription, ToastProvider, ToastRoot, ToastTitle, ToastViewport } from 'radix-vue'
+
+import DateDepartPicker from './DateDepartPicker.vue'
 const open = ref(false)
 const eventDateRef = ref(new Date())
 const timerRef = ref(0)
-
-
 
 function oneWeekAway() {
   const now = new Date()
@@ -219,12 +193,12 @@ function handleClick(type: 'forfait' | 'personnalise') {
     eventDateRef.value = oneWeekAway()
     open.value = true
     window.clearTimeout(timerRef.value)
- 
+
     const code = generateReservationCode()
     timerRef.value = window.setTimeout(() => {
-    eventDateRef.value = oneWeekAway()
-    open.value = true
-  }, 100)
+      eventDateRef.value = oneWeekAway()
+      open.value = true
+    }, 100)
 
     console.log('Type de réservation:', type)
     console.log('Code:', code)
@@ -235,6 +209,7 @@ function handleClick(type: 'forfait' | 'personnalise') {
 
 import CarPickerDialog from './CarPickerDialog.vue'
 import SearchBar from '../searchbar/SearchBar.vue'
+import InfoPassager from './InfoPassager.vue'
 
 // Car Selection
 const selectedCar = ref(null)
@@ -266,7 +241,6 @@ const points = [
 
 const destinations = [...points]
 
-const baggageOptions = ['Aucun', '1', '2', '3', '4+']
 
 // Tab styling
 const tabClass =
