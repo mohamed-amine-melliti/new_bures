@@ -63,14 +63,14 @@
         <div v-else class="space-y-4">
           <div>
             <label class="block text-sm font-medium">Point de départ</label>
-            <SearchBarDepart/>
+            <SearchBarDepart @placeSelected="handlePlaceSelected" />
 
           </div>
 
           <div>
             <label class="block text-sm font-medium">Destination</label>
-            <SearchBar :placeholder="'Votre point de départ'" />
-
+            <SearchBar :placeholder="'Votre point de départ'" v-model="departureText" 
+              />
           </div>
 
           <div class="pt-4">
@@ -97,18 +97,17 @@
 
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 
 // 🔹 External UI Components
-import { ToastProvider, ToastRoot, ToastViewport, ToastDescription, ToastTitle, ToastAction } from 'radix-vue'
+import { ToastProvider, ToastViewport } from 'radix-vue'
 
 // 🔹 Internal Components
 import DateDepartPicker from './DateDepartPicker.vue'
 import SearchBar from '../searchbar/SearchBar.vue'
 import InfoPassager from './InfoPassager.vue'
 import { points } from '@/interfaces/points'
-import SearchBarDesination from '../searchbardestination/SearchBarDesination.vue'
 import CarPickerTrigger from './CarPickerTrigger.vue'
 
 // =============================
@@ -130,6 +129,12 @@ function prettyDate(date: Date): string {
 
 function generateReservationCode(): string {
   return 'VTC-' + Math.random().toString(36).substring(2, 8).toUpperCase()
+}
+
+
+const handlePlaceSelected = (place) => {
+  console.log('Parent received place:', place)
+  // Set it in an input or wherever you need
 }
 
 // =============================
