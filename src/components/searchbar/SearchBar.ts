@@ -6,7 +6,7 @@ import { TabsContent, TabsIndicator, TabsList, TabsRoot, TabsTrigger } from 'rek
 
 export default defineComponent({
   name: 'SearchBar',
-  emits: ['update:modelValue'], // ✅ Declare the emitted event
+  emits: ['update:modelValue'], // ✅ Declare emitted event
   components: {
     TabsContent,
     TabsIndicator,
@@ -30,13 +30,13 @@ export default defineComponent({
     const searchResults = ref<any[]>([])
     const searcherTimeout = ref<any>(null)
     const { searchPlacesByTerm } = usePlacesStore()
-  
+
     const searchTerm = computed({
       get: () => searchInput.value,
       set: (val: string) => {
         searchInput.value = val
         emit('update:modelValue', val)
-  
+
         if (searcherTimeout.value) clearTimeout(searcherTimeout.value)
         searcherTimeout.value = setTimeout(async () => {
           const results = await searchPlacesByTerm(val)
@@ -44,17 +44,25 @@ export default defineComponent({
         }, 500)
       }
     })
-  
+
+    // ✅ Called when place is selected in SearchResults
+    const handlePlaceSelected = (place: any) => {
+      const selectedName = place.place_name || place.display_name || ''
+      searchTerm.value = selectedName           // update input field
+      emit('update:modelValue', selectedName)   // emit to parent if needed
+    }
+    
+
     watch(() => props.modelValue, (newVal) => {
       if (newVal !== searchInput.value) {
         searchInput.value = newVal
       }
     })
-  
+
     return {
       searchTerm,
       searchResults,
+      handlePlaceSelected, // ✅ expose the handler
     }
   }
-  
 })

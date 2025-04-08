@@ -63,12 +63,14 @@
         <div v-else class="space-y-4">
           <div>
             <label class="block text-sm font-medium">Point de départ</label>
-            <SearchBar :placeholder="'Votre point de départ'" />
+            <SearchBarDepart/>
+
           </div>
 
           <div>
             <label class="block text-sm font-medium">Destination</label>
-            <SearchBarDesination />
+            <SearchBar :placeholder="'Votre point de départ'" />
+
           </div>
 
           <div class="pt-4">
@@ -182,6 +184,7 @@ const destinations = [...points]
 // =============================
 import emailjs from '@emailjs/browser'
 import ReservationToast from './ReservationToast.vue'
+import SearchBarDepart from '../searchbardestination/SearchBarDepart.vue'
 emailjs.init('walt8N3u7ba3ic9lb') // Replace with your EmailJS public key
 
 function handleClick() {
