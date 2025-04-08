@@ -6,29 +6,28 @@ import { PlacesResponse, Feature } from '@/interfaces/places'
 
 const actions: ActionTree<PlacesState, StateInterface> = {
 
-    async getInitialLocation({ commit }) {
-        commit('setIsLoadingLocation', true)
-      
-        try {
-          const position: GeolocationPosition = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, {
-              enableHighAccuracy: true,
-              timeout: 10000,
-              maximumAge: 0,
-            })
-          })
-      
-          const { latitude, longitude } = position.coords
-          commit('setLngLat', { lat: latitude, lng: longitude })
-      
-        } catch (error) {
-          console.error('Erreur géolocalisation :', error)
-          alert("❌ Impossible de localiser votre position. Veuillez activer la géolocalisation.")
-        } finally {
-          commit('setIsLoadingLocation', false)
-        }
-      },
-      
+  async getInitialLocation({ commit }) {
+    commit('setIsLoadingLocation', true)
+
+    try {
+      const position: GeolocationPosition = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        })
+      })
+
+      const { latitude, longitude } = position.coords
+      commit('setLngLat', { lat: latitude, lng: longitude })
+
+    } catch (error) {
+      console.error('Erreur géolocalisation :', error)
+      alert("❌ Impossible de localiser votre position. Veuillez activer la géolocalisation.")
+    } finally {
+      commit('setIsLoadingLocation', false)
+    }
+  },
 
   async searchPlacesByTerm({ commit, state }, query: string): Promise<Feature[]> {
     if (query.length === 0) {
@@ -58,6 +57,11 @@ const actions: ActionTree<PlacesState, StateInterface> = {
     } finally {
       commit('setIsLoadingPlaces', false)
     }
+  },
+
+  // ✅ New action to store selected external place
+  setExternalSelectedPlace({ commit }, place: Feature) {
+    commit('setSelectedExternalPlace', place)
   }
 
 }

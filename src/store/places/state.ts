@@ -1,18 +1,25 @@
-import { Feature } from '../../interfaces/places';
+import { Feature } from '../../interfaces/places'
+
 export interface PlacesState {
-    isLoading: boolean;
-    userLocation?: [number, number] // longitud, latitud
-    places: Feature[],
-    isLoadingPlaces: boolean
+  isLoading: boolean
+  userLocation?: [number, number] // longitude, latitude
+  places: Feature[]
+  isLoadingPlaces: boolean
+
+  // ✅ Add this line
+  selectedExternalPlace: Feature | null
 }
 
 function state(): PlacesState {
-    return {
-        isLoading: true,
-        userLocation: undefined,
-        places: [],
-        isLoadingPlaces: false
-    }
+  return {
+    isLoading: true,
+    userLocation: undefined,
+    places: [],
+    isLoadingPlaces: false,
+
+    // ✅ Add this line
+    selectedExternalPlace: null
+  }
 }
 
-export default state;
+export default state

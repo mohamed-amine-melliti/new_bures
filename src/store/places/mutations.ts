@@ -1,24 +1,26 @@
-import { MutationTree } from 'vuex';
-import { PlacesState } from './state';
-import { Feature } from '../../interfaces/places';
-
+import { MutationTree } from 'vuex'
+import { PlacesState } from './state'
+import { Feature } from '../../interfaces/places'
 
 const mutation: MutationTree<PlacesState> = {
-    setLngLat( state: PlacesState, {lng, lat} : { lng: number, lat: number } ) {
-        // a line to prevent linter errors
-        state.userLocation = [ lng, lat ]
-        state.isLoading = false
-    },
+  setLngLat(state: PlacesState, { lng, lat }: { lng: number, lat: number }) {
+    state.userLocation = [lng, lat]
+    state.isLoading = false
+  },
 
-    setIsLoadingPlaces( state ) {
-//
-    },
+  setIsLoadingPlaces(state) {
+    state.isLoadingPlaces = true
+  },
 
-    setPlaces(state, places: Feature[]){
-        state.places = places
-        state.isLoadingPlaces = false
-    }
+  setPlaces(state, places: Feature[]) {
+    state.places = places
+    state.isLoadingPlaces = false
+  },
+
+  // ✅ New mutation to store selected external place
+  setSelectedExternalPlace(state, place: Feature) {
+    state.selectedExternalPlace = place
+  }
 }
 
-
-export default mutation;
+export default mutation

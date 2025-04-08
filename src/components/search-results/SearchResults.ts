@@ -5,18 +5,41 @@ import { Feature } from '@/interfaces/places'
 export default defineComponent({
   name: 'SearchResults',
 
-  // ✅ Declare the emitted event this way in options API
+  props: {
+    selectedPlace: {
+      type: Object as () => Feature | null,
+      default: null
+    }
+  },
+
   emits: ['placeSelected'],
 
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const { isLoadingPlaces, places, userLocation } = usePlacesStore()
     const { map, setPlaceMarkers, getRouteBetweenPoints } = useMapStore()
     const activePlace = ref<string>('')
 
-    watch(places, (newPlaces) => {
-      activePlace.value = ''
-      setPlaceMarkers(newPlaces)
-    })
+    // 🔁 If a place is selected from outside (like SearchBarDepart), calculate route from userLocation
+    watch(() => props.selectedPlace, (newPlace) => {
+      if (newPlace && userLocation.value) {
+        const [lng, lat] = newPlace.center
+        const [startLng, startLat] = userLocation.value
+
+        // 1. Center the map
+        map.value?.flyTo({ center: [lng, lat], zoom: 14 })
+
+        // 2. Calculate route
+        const start: [number, number] = [startLng, startLat]
+        const end: [number, number] = [lng, lat]
+        getRouteBetweenPoints(start, end)
+
+        // 3. Optionally, emit the selected place
+        emit('placeSelected', newPlace)
+
+        // 4. Set it as active
+        activePlace.value = newPlace.id
+      }
+    }, { immediate: true })
 
     const onPlaceClicked = (place: Feature) => {
       activePlace.value = place.id
@@ -30,8 +53,8 @@ export default defineComponent({
 
     const onChoisirClicked = (place: Feature) => {
       activePlace.value = place.id
-
       const [lng, lat] = place.center
+
       map.value?.flyTo({
         center: [lng, lat],
         zoom: 14
@@ -43,7 +66,6 @@ export default defineComponent({
         getRouteBetweenPoints(start, end)
       }
 
-      // ✅ Proper emit usage here
       emit('placeSelected', place)
     }
 

@@ -132,10 +132,6 @@ function generateReservationCode(): string {
 }
 
 
-const handlePlaceSelected = (place) => {
-  console.log('Parent received place:', place)
-  // Set it in an input or wherever you need
-}
 
 // =============================
 // 🔸 Vuex Store
@@ -183,6 +179,12 @@ const selectedCar = ref(null)
 const forfaitDeparture = ref('')
 const forfaitDestination = ref('')
 const destinations = [...points]
+const departureText = ref('')
+
+
+const handlePlaceSelected = (place: any) => {
+  departureText.value = place.display_name // 👈 Set input value
+}
 
 // =============================
 // 🔸 Reservation Submit Handler

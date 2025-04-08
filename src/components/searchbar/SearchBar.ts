@@ -6,7 +6,7 @@ import { TabsContent, TabsIndicator, TabsList, TabsRoot, TabsTrigger } from 'rek
 
 export default defineComponent({
   name: 'SearchBar',
-  emits: ['update:modelValue'], // ✅ Declare emitted event
+  emits: ['update:modelValue'], // emits value to v-model
   components: {
     TabsContent,
     TabsIndicator,
@@ -45,13 +45,12 @@ export default defineComponent({
       }
     })
 
-    // ✅ Called when place is selected in SearchResults
+    // 🔥 Called when a place is selected from SearchResults
     const handlePlaceSelected = (place: any) => {
       const selectedName = place.place_name || place.display_name || ''
-      searchTerm.value = selectedName           // update input field
-      emit('update:modelValue', selectedName)   // emit to parent if needed
+      searchTerm.value = selectedName           // update input
+      emit('update:modelValue', selectedName)   // emit to parent
     }
-    
 
     watch(() => props.modelValue, (newVal) => {
       if (newVal !== searchInput.value) {
@@ -62,7 +61,7 @@ export default defineComponent({
     return {
       searchTerm,
       searchResults,
-      handlePlaceSelected, // ✅ expose the handler
+      handlePlaceSelected, // expose handler for SearchResults
     }
   }
 })
