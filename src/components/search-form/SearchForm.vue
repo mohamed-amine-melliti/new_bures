@@ -206,7 +206,7 @@ function handleClick() {
     store.commit('reservation/saveReservation', reservation)
 
     // Send email via EmailJS
-    emailjs.send('service_zdhsvy8', 'template_xz5xbon', {
+    emailjs.send('', '', {
       to_email: passengerInfo.value.email,
       email: passengerInfo.value.email,
       name: passengerInfo.value.name,
@@ -224,7 +224,7 @@ function handleClick() {
       })
 
     console.log('Réservation:', reservation)
-  }, 100)
+      }, 100)
 }
 
 // =============================
@@ -233,13 +233,11 @@ function handleClick() {
 function handleDateChange(date: string) {
   console.log('Departure date selected:', date)
 }
-
 function handleInfoUpdate(data: PassengerInfo) {
   passengerInfo.value = data
   console.log('Received from child:', data)
 }
 </script>
-
 
 
 <style scoped>
