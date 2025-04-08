@@ -1,49 +1,65 @@
-import { ActionTree } from 'vuex';
-import { PlacesState } from './state';
-import { StateInterface } from '../index';
-import { searchApi } from '@/apis';
-import { PlacesResponse, Feature } from '../../interfaces/places';
-
+import { ActionTree } from 'vuex'
+import { PlacesState } from './state'
+import { StateInterface } from '../index'
+import { searchApi } from '@/apis'
+import { PlacesResponse, Feature } from '@/interfaces/places'
 
 const actions: ActionTree<PlacesState, StateInterface> = {
-    
-    getInitialLocation( { commit } ) {
-        // todo: colocar loading
-        navigator.geolocation.getCurrentPosition(
-            ( coords ) => commit('setLngLat', { lng: coords.coords.longitude, lat: coords.coords.latitude }),
-            ( err ) => {
-                console.log(err)
-                throw new Error("No geolocation :( ")
-            }
-        )
-    },
 
-    // TODO: colocar valor de retorno
-    async searchPlacesByTerm({commit, state}, query: string): Promise<Feature[]> {
-
-        if(query.length === 0){
-            commit('setPlaces', [])
-            return []
+    async getInitialLocation({ commit }) {
+        commit('setIsLoadingLocation', true)
+      
+        try {
+          const position: GeolocationPosition = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              enableHighAccuracy: true,
+              timeout: 10000,
+              maximumAge: 0,
+            })
+          })
+      
+          const { latitude, longitude } = position.coords
+          commit('setLngLat', { lat: latitude, lng: longitude })
+      
+        } catch (error) {
+          console.error('Erreur géolocalisation :', error)
+          alert("❌ Impossible de localiser votre position. Veuillez activer la géolocalisation.")
+        } finally {
+          commit('setIsLoadingLocation', false)
         }
+      },
+      
 
-        if(!state.userLocation){
-            throw new Error('No hay ubicación del usuario')
-        }
-
-        commit('setIsLoadingPlaces')
-        
-        const resp = await searchApi.get<PlacesResponse>(`/${ query }.json`, {
-            params: {
-                proximity: state.userLocation?.join(',')
-            }
-        })
-
-        commit('setPlaces', resp.data.features)
-
-        return resp.data.features
+  async searchPlacesByTerm({ commit, state }, query: string): Promise<Feature[]> {
+    if (query.length === 0) {
+      commit('setPlaces', [])
+      return []
     }
+
+    if (!state.userLocation) {
+      throw new Error('User location is not set.')
+    }
+
+    commit('setIsLoadingPlaces', true)
+
+    try {
+      const resp = await searchApi.get<PlacesResponse>(`/${query}.json`, {
+        params: {
+          proximity: state.userLocation.join(','),
+        },
+      })
+
+      commit('setPlaces', resp.data.features)
+      return resp.data.features
+
+    } catch (error) {
+      console.error('Error searching places:', error)
+      return []
+    } finally {
+      commit('setIsLoadingPlaces', false)
+    }
+  }
+
 }
 
-
-
-export default actions;
+export default actions
