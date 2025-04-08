@@ -101,3 +101,11 @@
     color: #f44336;
   }
   
+  .car-card {
+    background-color: #99D7F7;
+    transition: background-color 0.2s ease;
+  }
+
+  .car-card:active {
+    background-color: #90BFE7;
+  }
