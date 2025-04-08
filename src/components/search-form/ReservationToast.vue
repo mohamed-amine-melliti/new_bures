@@ -42,11 +42,12 @@
   
     <!-- Bottom-left global viewport -->
     <ToastViewport
-      class="[--viewport-padding:_25px] fixed bottom-0 left-0 
-             flex flex-col p-[var(--viewport-padding)] gap-[10px] 
-             w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] 
-             outline-none pointer-events-none"
-    />
+  class="[--viewport-padding:_25px] fixed bottom-0 right-0 
+         flex flex-col p-[var(--viewport-padding)] gap-[10px] 
+         w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] 
+         outline-none pointer-events-none"
+/>
+
   </template>
   
   
@@ -57,6 +58,7 @@
     ToastTitle,
     ToastDescription,
     ToastAction,
+    ToastViewport
   } from 'radix-vue'
   
   const props = defineProps<{
