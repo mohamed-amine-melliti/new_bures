@@ -7,14 +7,14 @@
             {{ userLocation }}
         </p>-->
 
-    <div v-if="!isUserLocationReady" class="loading d-flex justify-content-center align-items-center">
+    <!-- <div v-if="!isUserLocationReady" class="loading d-flex justify-content-center align-items-center">
         <div class="text-center">
             <h3>Please wait a moment</h3>
             <span>Locating...</span>
         </div>
-    </div>
+    </div> -->
 
-    <div v-show="isUserLocationReady"
+    <div 
     
         class="map-container"
         ref="mapElement"

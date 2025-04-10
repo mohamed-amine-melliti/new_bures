@@ -3,77 +3,57 @@ import mapboxgl from 'mapbox-gl';
 import { usePlacesStore, useMapStore } from '@/composables';
 
 export default defineComponent({
-    name: 'MapView',
-    setup() {
-        const mapElement = ref<HTMLDivElement>();
-        const { isLoading, userLocation, isUserLocationReady } = usePlacesStore();
-        const { setMap } = useMapStore();
+  name: 'MapView',
+  setup() {
+    const mapElement = ref<HTMLDivElement>();
+    const { isLoading, userLocation, isUserLocationReady } = usePlacesStore();
+    const { setMap } = useMapStore();
 
-        // Define France's boundaries
-        const FRANCE_BOUNDS = {
-            minLng: -5.0, // Western border
-            maxLng: 9.7,  // Eastern border
-            minLat: 41.0, // Southern border
-            maxLat: 51.2  // Northern border
-        };
+    const DEFAULT_LOCATION: [number, number] = [2.3522, 48.8566]; // Paris [lng, lat]
 
-        // Function to check if a location is within France
-        const isLocationInFrance = (lng: number, lat: number): boolean => {
-            return (
-                lng >= FRANCE_BOUNDS.minLng &&
-                lng <= FRANCE_BOUNDS.maxLng &&
-                lat >= FRANCE_BOUNDS.minLat &&
-                lat <= FRANCE_BOUNDS.maxLat
-            );
-        };
-        
+    const initMap = async () => {
+      if (!mapElement.value) throw new Error('Div element does not exist');
 
-        const initMap = async () => {
-            if (!mapElement.value) throw new Error("Div element does not exist");
+      await Promise.resolve();
 
-            await Promise.resolve();
+      const center = userLocation.value ?? DEFAULT_LOCATION;
 
-            const map = new mapboxgl.Map({
-                container: mapElement.value, // Container ID
-                style: 'mapbox://styles/mapbox/streets-v12', // Style URL
-                center: [2.2137, 46.6034], // Centered on France
-                zoom: 5, // Suitable zoom to show all of France
-            });
+      const map = new mapboxgl.Map({
+        container: mapElement.value,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center,
+        zoom: 12, // Slightly closer zoom for city view
+      });
 
-            // Example of locations (replace with real data)
-            const locations = [
-                { lng: 2.3522, lat: 48.8566, name: "Paris" },
-              //  { lng: 4.8357, lat: 45.7640, name: "Lyon" },
-               // { lng: -1.5536, lat: 47.2184, name: "Nantes" },
-            ];
+      if (userLocation.value) {
+        const myLocationPopup = new mapboxgl.Popup({ offset: [0, -25] })
+          .setLngLat(userLocation.value)
+          .setHTML(`<h4>Vous êtes ici !</h4>`);
 
-            // Filter locations to only include those inside France
-            const filteredLocations = locations.filter(({ lng, lat }) => isLocationInFrance(lng, lat));
+        new mapboxgl.Marker()
+          .setPopup(myLocationPopup)
+          .setLngLat(userLocation.value)
+          .addTo(map);
+      }
 
-            // Add markers for valid locations
-            filteredLocations.forEach(({ lng, lat, name }) => {
-                new mapboxgl.Marker()
-                    .setLngLat([lng, lat])
-                    .setPopup(new mapboxgl.Popup().setText(name))
-                    .addTo(map);
-            });
+      setMap(map);
+    };
 
-            setMap(map);
-        };
+    onMounted(() => {
+      initMap();
+    });
 
-        onMounted(() => {
-            if (isUserLocationReady.value) 
-                return initMap();
-        });
+    watch(isUserLocationReady, (newVal) => {
+      if (newVal && userLocation.value) {
+        initMap(); // Optional: re-center if userLocation becomes available later
+      }
+    });
 
-        watch(isUserLocationReady, (newVal) => {
-            if (newVal) initMap();
-        });
-
-        return {
-            isLoading,
-            isUserLocationReady,
-            mapElement
-        };
-    }
+    return {
+      isLoading,
+      userLocation,
+      isUserLocationReady,
+      mapElement,
+    };
+  },
 });

@@ -39,7 +39,7 @@ export interface Context {
 }
 
 export enum Language {
-    Es = "es",
+    Es = "Fr",
 }
 
 export interface Geometry {

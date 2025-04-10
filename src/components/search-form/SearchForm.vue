@@ -99,7 +99,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-
+import { PassengerInfo, passengerInfo } from '@/interfaces/usePassengerInfo'
+import emailjs from '@emailjs/browser'
+import ReservationToast from './ReservationToast.vue'
+import SearchBarDepart from '../searchbardestination/SearchBarDepart.vue'
 // 🔹 External UI Components
 import { ToastProvider, ToastViewport } from 'radix-vue'
 
@@ -149,24 +152,6 @@ const tabClass =
 const activeTabClass =
   'w-1/2 py-2 text-center text-sm bg-white font-semibold border border-gray-300'
 
-// =============================
-// 🔸 Passenger Info
-// =============================
-interface PassengerInfo {
-  name: string
-  email: string
-  phone: string
-  passengers: string
-  baggage: string
-}
-
-const passengerInfo = ref<PassengerInfo>({
-  name: '',
-  email: '',
-  phone: '',
-  passengers: '',
-  baggage: ''
-})
 
 // =============================
 // 🔸 Car Selection
@@ -189,9 +174,7 @@ const handlePlaceSelected = (place: any) => {
 // =============================
 // 🔸 Reservation Submit Handler
 // =============================
-import emailjs from '@emailjs/browser'
-import ReservationToast from './ReservationToast.vue'
-import SearchBarDepart from '../searchbardestination/SearchBarDepart.vue'
+
 emailjs.init('walt8N3u7ba3ic9lb') // Replace with your EmailJS public key
 
 function handleClick() {

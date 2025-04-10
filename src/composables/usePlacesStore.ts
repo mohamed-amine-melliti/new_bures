@@ -18,16 +18,15 @@ export const usePlacesStore = () => {
         userLocation: computed( () => store.state.places.userLocation ),
         places: computed( () => store.state.places.places ),
         isLoadingPlaces: computed( () => store.state.places.isLoadingPlaces ),
-        
-        // Getter
+        departLocation: computed(() => store.state.places.selectedExternalPlace),
+
+        // Getters
         isUserLocationReady: computed<boolean>( () => store.getters['places/isUserLocationReady'] ),
-
-
         // Actions
-        searchPlacesByTerm: ( query: string ) => store.dispatch('places/searchPlacesByTerm', query)
-
+        searchPlacesByTerm: ( query: string ) => store.dispatch('places/searchPlacesByTerm', query),
 
         // Mutations
-    
+        setDepartLocation: (location: any) => store.commit('places/setDepartLocation', location),
+
     }
 }

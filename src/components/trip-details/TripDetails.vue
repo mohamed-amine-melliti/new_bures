@@ -25,19 +25,26 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.trip-container{
-    padding: 10px;
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    border-radius: 10px;
-    background-color: white;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
-    width: 300px;
-    font-size: 20px;
+.trip-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
+  font-size: 16px;
+  text-align: center;
+  z-index: 9999;
 }
 
-strong{
-    color: #42b983;
+strong {
+  color: #42b983;
 }
+
+
+
 </style>
