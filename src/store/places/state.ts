@@ -7,7 +7,7 @@ export interface PlacesState {
   isLoadingPlaces: boolean
 
   // ✅ Add this line
-  selectedExternalPlace: Feature | null
+  selectedExternalPlace?: [number, number]
 }
 
 function state(): PlacesState {
@@ -18,7 +18,7 @@ function state(): PlacesState {
     isLoadingPlaces: false,
 
     // ✅ Add this line
-    selectedExternalPlace: null
+    selectedExternalPlace: undefined
   }
 }
 

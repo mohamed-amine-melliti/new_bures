@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, defineProps, defineEmits } from 'vue'
 import axios from 'axios'
+import { usePlacesStore } from '@/composables'
 
 // Props
 const props = defineProps<{
@@ -11,6 +12,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'placeSelected', place: any): void
 }>()
+
+const { setSelectedInputPlace } = usePlacesStore()
 
 const searchTerm = ref('')
 const suggestions = ref<any[]>([])
@@ -55,10 +58,10 @@ const selectSuggestion = (place: any) => {
   suggestions.value = []
 
   console.log('Selected coords:', [place.lon, place.lat])
-  emit('placeSelected', place) // ✅ Emit selected place
+  setSelectedInputPlace(place) // ✅ Store in Vuex
+  emit('placeSelected', place) // ✅ Emit to parent
 }
 </script>
-
 
 <template>
   <div class="relative">

@@ -17,9 +17,9 @@ const mutation: MutationTree<PlacesState> = {
     state.isLoadingPlaces = false
   },
 
-  // ✅ New mutation to store selected external place
-  setSelectedExternalPlace(state, place: Feature) {
-    state.selectedExternalPlace = place
+  // ✅ Updated to store selected external place as [lng, lat]
+  setSelectedExternalPlace(state, coords: [number, number]) {
+    state.selectedExternalPlace = coords
   }
 }
 
