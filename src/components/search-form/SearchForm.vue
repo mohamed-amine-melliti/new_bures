@@ -23,26 +23,31 @@
 
         <!-- Forfaitaire Section -->
         <div v-if="tripType === 'Forfaitaire'" class="space-y-4">
+          <!-- Point de départ -->
           <div>
             <label class="block text-sm font-medium">Point de départ</label>
             <select v-model="forfaitDeparture" class="w-full border rounded-md p-2">
               <option disabled value="">Choisissez un point</option>
-              <option v-for="point in points" :key="point.value" :value="point.value">
+              <option v-for="point in points" :key="point.value" :value="point.value"
+                :disabled="point.value === forfaitDestination">
                 {{ point.label }}
               </option>
             </select>
           </div>
 
+          <!-- Destination -->
           <div>
             <label class="block text-sm font-medium">Destination</label>
             <select v-model="forfaitDestination" class="w-full border rounded-md p-2">
               <option disabled value="">Choisissez une destination</option>
-              <option v-for="destination in destinations" :key="destination.value" :value="destination.value">
+              <option v-for="destination in destinations" :key="destination.value" :value="destination.value"
+                :disabled="destination.value === forfaitDeparture">
                 {{ destination.label }}
               </option>
             </select>
           </div>
 
+          <!-- Reservation Button + Toast -->
           <div class="pt-4">
             <ToastProvider>
               <Button
@@ -52,12 +57,13 @@
               </Button>
               <ReservationToast v-model:open="open" :eventDate="eventDateRef" :customCode="generateReservationCode()" />
               <ToastViewport class="[--viewport-padding:_25px] fixed bottom-0 right-0 
-         flex flex-col p-[var(--viewport-padding)] gap-[10px] 
-         w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] 
-         outline-none pointer-events-none" />
+        flex flex-col p-[var(--viewport-padding)] gap-[10px] 
+        w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] 
+        outline-none pointer-events-none" />
             </ToastProvider>
           </div>
         </div>
+
 
         <!-- Personnalisé Section -->
         <div v-else class="space-y-4">
@@ -69,8 +75,7 @@
 
           <div>
             <label class="block text-sm font-medium">Destination</label>
-            <SearchBar :placeholder="'Votre point de départ'" v-model="departureText" 
-              />
+            <SearchBar :placeholder="'Votre point de départ'" v-model="departureText" />
           </div>
 
           <div class="pt-4">
@@ -201,8 +206,8 @@ function handleClick() {
 
     store.commit('reservation/saveReservation', reservation)
 
-    // Send email via EmailJS
-    emailjs.send('service_zdhsvy8', 'template_xz5xbon', {
+    // Send email via EmailJS ,
+    emailjs.send('', '', {
       to_email: passengerInfo.value.email,
       email: passengerInfo.value.email,
       name: passengerInfo.value.name,
