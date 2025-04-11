@@ -2,6 +2,7 @@
 import { ref, watch, defineProps, defineEmits } from 'vue'
 import axios from 'axios'
 import { usePlacesStore } from '@/composables'
+import { toRaw } from 'vue';
 
 // Props
 const props = defineProps<{
@@ -58,8 +59,13 @@ const selectSuggestion = (place: any) => {
   searchTerm.value = place.display_name
   suggestions.value = []
 
-  const lon = parseFloat(place.lon)
-  const lat = parseFloat(place.lat)
+  let newplace = toRaw(place)
+
+  const lon = parseFloat(newplace.lon)
+  const lat = parseFloat(newplace.lat)
+
+  console.log('Selected place object:', newplace)
+  console.log('[lon, lat]', [lon, lat])
 
   // ✅ Store the coords in Vuex
   setSelectedInputPlace([lon, lat])

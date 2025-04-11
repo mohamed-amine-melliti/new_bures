@@ -25,7 +25,7 @@ export const usePlacesStore = () => {
         searchPlacesByTerm: ( query: string ) => store.dispatch('places/searchPlacesByTerm', query),
 
         // Mutations
-        setSelectedInputPlace: (location: any) => store.commit('places/setDepartLocation', location),
+        setSelectedInputPlace: (location: any) => store.commit('places/setSelectedExternalPlace', location),
 
     }
 }
