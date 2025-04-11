@@ -8,8 +8,8 @@ export default defineComponent({
   props: {
     selectedPlace: {
       type: Object as () => Feature | null,
-      default: null
-    }
+      default: null,
+    },
   },
 
   emits: ['placeSelected'],
@@ -18,36 +18,34 @@ export default defineComponent({
     const {
       isLoadingPlaces,
       places,
-      selectedExternalPlace, // 👈 Start point [lng, lat] from input
+      selectedExternalPlace,
     } = usePlacesStore()
 
     const {
       map,
-      setPlaceMarkers,
-      getRouteBetweenPoints
+      getRouteBetweenPoints,
     } = useMapStore()
 
     const activePlace = ref<string>('')
 
-    // 🔁 Watch for external destination selection
-    watch(() => props.selectedPlace, (newPlace) => {
-      if (newPlace && selectedExternalPlace.value) {
-        const [endLng, endLat] = newPlace.center
-        const [startLng, startLat] = selectedExternalPlace.value
+    // ✅ Watch props INSIDE setup
+    watch(
+      () => props.selectedPlace,
+      async (newPlace) => {
+        if (newPlace && selectedExternalPlace.value) {
+          const [endLng, endLat] = newPlace.center
+          const [startLng, startLat] = selectedExternalPlace.value
 
-        // 1. Center the map on the destination
-        map.value?.flyTo({ center: [endLng, endLat], zoom: 14 })
+          map.value?.flyTo({ center: [endLng, endLat], zoom: 14 })
 
-        // 2. Calculate route
-        const start: [number, number] = [startLng, startLat]
-        const end: [number, number] = [endLng, endLat]
-        getRouteBetweenPoints(start, end)
+          await getRouteBetweenPoints([startLng, startLat], [endLng, endLat])
 
-        // 3. Emit and mark active
-        emit('placeSelected', newPlace)
-        activePlace.value = newPlace.id
-      }
-    }, { immediate: true })
+          emit('placeSelected', newPlace)
+          activePlace.value = newPlace.id
+        }
+      },
+      { immediate: true }
+    )
 
     const onPlaceClicked = (place: Feature) => {
       activePlace.value = place.id
@@ -55,15 +53,17 @@ export default defineComponent({
       map.value?.flyTo({ center: [lng, lat], zoom: 14 })
     }
 
-    const onChoisirClicked = (place: Feature) => {
+    const onChoisirClicked = async (place: Feature) => {
       activePlace.value = place.id
       const [lng, lat] = place.center
+
       map.value?.flyTo({ center: [lng, lat], zoom: 14 })
 
       if (selectedExternalPlace.value) {
+        console.log('hné',selectedExternalPlace.value)
         const start = selectedExternalPlace.value
         const end: [number, number] = [lng, lat]
-        getRouteBetweenPoints(start, end)
+        await getRouteBetweenPoints(start, end)
       }
 
       emit('placeSelected', place)
@@ -74,7 +74,7 @@ export default defineComponent({
       places,
       activePlace,
       onPlaceClicked,
-      onChoisirClicked
+      onChoisirClicked,
     }
-  }
+  },
 })

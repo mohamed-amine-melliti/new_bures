@@ -13,6 +13,7 @@ const emit = defineEmits<{
   (e: 'placeSelected', place: any): void
 }>()
 
+// ✅ Pull from store
 const { setSelectedInputPlace } = usePlacesStore()
 
 const searchTerm = ref('')
@@ -51,17 +52,23 @@ watch(searchTerm, async (query) => {
   }
 })
 
-// Selection logic
+// ✅ Selection logic
 const selectSuggestion = (place: any) => {
   justSelected.value = true
   searchTerm.value = place.display_name
   suggestions.value = []
 
-  console.log('Selected coords:', [place.lon, place.lat])
-  setSelectedInputPlace(place) // ✅ Store in Vuex
-  emit('placeSelected', place) // ✅ Emit to parent
+  const lon = parseFloat(place.lon)
+  const lat = parseFloat(place.lat)
+
+  // ✅ Store the coords in Vuex
+  setSelectedInputPlace([lon, lat])
+
+  // ✅ Emit for parent use
+  emit('placeSelected', place)
 }
 </script>
+
 
 <template>
   <div class="relative">
