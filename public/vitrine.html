@@ -110,7 +110,6 @@
   <script src="assetsfiles/a11y.js" async=""></script>
 
   <style>
-  
     /* Fullscreen loader */
     #loader {
       position: fixed;
@@ -150,28 +149,28 @@
     }
   </style>
 </head>
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        // Hide loader
-        document.getElementById('loader').classList.add('hidden');
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      // Hide loader
+      document.getElementById('loader').classList.add('hidden');
 
-        // Show content
-        const main = document.getElementById('main-content');
-        main.classList.add('visible');
-      }, 3000); // 3 seconds
-    });
-  </script>
+      // Show content
+      const main = document.getElementById('main-content');
+      main.classList.add('visible');
+    }, 3000); // 3 seconds
+  });
+</script>
 
 
 
 <body style="" class="">
 
 
-    <!-- Loading Screen -->
-    <div id="loader">
-      <img  src="assetsfiles/loader.gif" alt="Loading...">
-    </div>
+  <!-- Loading Screen -->
+  <div id="loader">
+    <img src="assetsfiles/loader.gif" alt="Loading...">
+  </div>
 
   <div class="page_wrap">
     <div class="page_code_wrap">
@@ -2920,7 +2919,7 @@
         </div>
       </section>
 
-      <section  id="services" data-theme="inherit" class="categories_showcase_wrap ">
+      <section id="services" data-theme="inherit" class="categories_showcase_wrap ">
         <div data-padding-top="none" data-padding-bottom="none" class="categories_showcase_contain container">
           <div class="categories_showcase_component">
             <div class="categories_showcase_inner">
@@ -3042,66 +3041,45 @@
 
       <section id="info" class=" ">
         <div class="container mx-auto px-6 lg:px-16 flex flex-col-reverse lg:flex-row items-center gap-10">
-          
+
           <!-- Text Content -->
           <div class="w-full lg:w-1/2" data-aos="fade-right">
             <h2 class="text-4xl font-extrabold text-gray-800 leading-tight mb-4">
               Réserver VTC Paris
             </h2>
             <p class="text-lg text-gray-600 mb-6">
-              Profitez d’un service de chauffeurs privés professionnels, disponibles <strong>7j/7, 24h/24</strong>. Confort, ponctualité et sécurité sont nos priorités pour tous vos trajets à Paris et en Île-de-France.
+              Profitez d’un service de chauffeurs privés professionnels, disponibles <strong>7j/7, 24h/24</strong>.
+              Confort, ponctualité et sécurité sont nos priorités pour tous vos trajets à Paris et en Île-de-France.
             </p>
-            <a href="#reservation" class="inline-block bg-black text-white px-6 py-3 rounded-full shadow-xl hover:bg-gray-800 transition transform hover:scale-105">
+            <a href="#reservation"
+              class="inline-block bg-black text-white px-6 py-3 rounded-full shadow-xl hover:bg-gray-800 transition transform hover:scale-105">
               Réserver Maintenant
             </a>
           </div>
-      
+
           <!-- Image Content -->
-          <div class="w-full lg:w-1/2 flex justify-center relative" data-aos="fade-left">
-            <!-- Swiper Container -->
-            <div class="swiper-container rounded-2xl overflow-hidden shadow-xl">
-              <div class="swiper-wrapper">
+          <!-- Swiper Section -->
+          <div class="w-full lg:w-1/2 flex justify-center relative my-10" data-aos="fade-left">
+            <div class=" my-swiper w-full max-w-md rounded-2xl overflow-hidden shadow-xl">
+              <div >
                 <!-- Slide 1 -->
-                <div class="swiper-slide">
-                  <img 
-                    src="newassets/IMG-20250414-WA0007.jpg"
-                    alt="VTC Chauffeur Paris"
-                    class="w-full h-full object-cover transition-all duration-500 transform hover:scale-105"
-                    loading="lazy"
-                  />
+                <div class="-slide">
+                  <img src="newassets/IMG-20250414-WA0007.jpg" alt="Slide 1" class="w-full h-64 sm:h-80 object-cover" />
                 </div>
-                <!-- Slide 2 -->
-                <div class="swiper-slide">
-                  <img 
-                    src="newassets/IMG-20250414-WA0008.jpg" 
-                    alt="VTC Chauffeur Paris"
-                    class="w-full h-full object-cover transition-all duration-500 transform hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
-                <!-- Slide 3 -->
-                <div class="swiper-slide">
-                  <img 
-                    src="newassets/IMG-20250414-WA0009.jpg" 
-                    alt="VTC Chauffeur Paris"
-                    class="w-full h-full object-cover transition-all duration-500 transform hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-              <!-- Swiper Navigation -->
-              <div class="swiper-pagination"></div>
-              <div class="swiper-button-next"></div>
-              <div class="swiper-button-prev"></div>
             </div>
           </div>
+
+
+
+
+
         </div>
       </section>
 
-      
-    
 
-      <section id="pricing" class="px-4 py-16 bg-gray-50">
+
+
+      <section id="pricing" class="px-4 py-16 ">
         <!-- Header -->
         <div class="max-w-5xl mx-auto text-center mb-12">
           <h2 class="text-sm font-semibold text-orange-600 uppercase mb-2">Tarifs minimums</h2>
@@ -3112,7 +3090,7 @@
             Tarifs planchers nets pour chaque type de véhicule : Éco, Berline, Van
           </p>
         </div>
-      
+
         <!-- Responsive Table Container -->
         <div class="overflow-x-auto max-w-5xl mx-auto">
           <table class="min-w-full bg-white shadow-lg rounded-lg overflow-hidden text-sm sm:text-base">
@@ -3125,35 +3103,101 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 text-gray-700 text-center">
-              <tr><td class="text-left px-4 sm:px-6 py-3">Paris - Paris</td><td>30</td><td>50</td><td>50</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">Paris - Orly (rive droite)</td><td>40</td><td>45</td><td>—</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">Paris - Orly (rive gauche)</td><td>70</td><td>70</td><td>75</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">Paris - Roissy / Le Bourget</td><td>50</td><td>70</td><td>80</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">CDG > Paris</td><td>55</td><td>75</td><td>90</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">La Défense - CDG</td><td>60</td><td>80</td><td>90</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">La Défense - Orly</td><td>55</td><td>80</td><td>90</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">Roissy - Orly</td><td>70</td><td>90</td><td>100</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">Paris - Beauvais</td><td>120</td><td>150</td><td>180</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">CDG - Beauvais</td><td>110</td><td>140</td><td>160</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">Paris - Disneyland</td><td>70</td><td>80</td><td>90</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">Orly - Disneyland</td><td>70</td><td>90</td><td>90</td></tr>
-              <tr><td class="text-left px-4 sm:px-6 py-3">CDG - Disneyland</td><td>65</td><td>80</td><td>90</td></tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">Paris - Paris</td>
+                <td>30</td>
+                <td>50</td>
+                <td>50</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">Paris - Orly (rive droite)</td>
+                <td>40</td>
+                <td>45</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">Paris - Orly (rive gauche)</td>
+                <td>70</td>
+                <td>70</td>
+                <td>75</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">Paris - Roissy / Le Bourget</td>
+                <td>50</td>
+                <td>70</td>
+                <td>80</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">CDG > Paris</td>
+                <td>55</td>
+                <td>75</td>
+                <td>90</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">La Défense - CDG</td>
+                <td>60</td>
+                <td>80</td>
+                <td>90</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">La Défense - Orly</td>
+                <td>55</td>
+                <td>80</td>
+                <td>90</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">Roissy - Orly</td>
+                <td>70</td>
+                <td>90</td>
+                <td>100</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">Paris - Beauvais</td>
+                <td>120</td>
+                <td>150</td>
+                <td>180</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">CDG - Beauvais</td>
+                <td>110</td>
+                <td>140</td>
+                <td>160</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">Paris - Disneyland</td>
+                <td>70</td>
+                <td>80</td>
+                <td>90</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">Orly - Disneyland</td>
+                <td>70</td>
+                <td>90</td>
+                <td>90</td>
+              </tr>
+              <tr>
+                <td class="text-left px-4 sm:px-6 py-3">CDG - Disneyland</td>
+                <td>65</td>
+                <td>80</td>
+                <td>90</td>
+              </tr>
             </tbody>
           </table>
         </div>
-      
+
         <!-- Additional Info -->
         <div class="mt-8 max-w-4xl mx-auto text-center text-sm sm:text-base text-gray-500 px-4">
           <p class="mb-2">
-            <strong>Location avec chauffeur (3h minimum)</strong> : Éco 40€ / Berline 50€ / Van 50€ (espèces) — 55€ (facture)
+            <strong>Location avec chauffeur (3h minimum)</strong> : Éco 40€ / Berline 50€ / Van 50€ (espèces) — 55€
+            (facture)
           </p>
           <p>Accueil pancarte gare/aéroport : +5€</p>
         </div>
       </section>
-      
-      
-      
-    
+
+
+
+
 
     </main>
 
@@ -3178,7 +3222,7 @@
             <h2 class="mb-4 text-sm font-semibold text-gray-900 uppercase dark:text-white">Address</h2>
             <p class="text-gray-600 dark:text-gray-300">
               24 rue du royaume 91440 bures sur Yvette <br />
-              
+
             </p>
           </div>
 
