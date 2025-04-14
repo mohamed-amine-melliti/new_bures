@@ -6,7 +6,7 @@
             <button
               class="relative flex w-full cursor-pointer items-center justify-between gap-x-3 rounded-xl border-2 border-transparent bg-white px-3 py-2.5 shadow-md hover:border-gray-300 hover:bg-gray-50 transition">
               <div class="flex h-12 w-[84px] items-center">
-                <img class="block w-full object-contain" :src="modelValue?.img || '/car-placeholder.png'"
+                <img class="flex h-12  w-[84px] w-full object-contain" :src="modelValue?.img || 'https://cdn-icons-png.freepik.com/512/75/75816.png'"
                   :alt="modelValue?.name || 'Sélectionner un véhicule'" />
               </div>
               <div class="flex-1 truncate text-start">
