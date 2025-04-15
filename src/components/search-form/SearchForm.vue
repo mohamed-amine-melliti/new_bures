@@ -52,14 +52,11 @@
             <ToastProvider>
               <Button
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow transition"
-                @click="handleClick('forfaitaire')">
+                @click="handleClick('personnalise')" :disabled="!isPassengerInfoValid">
                 Réserver
               </Button>
               <ReservationToast v-model:open="open" :eventDate="eventDateRef" :customCode="generateReservationCode()" />
-              <ToastViewport class="[--viewport-padding:_25px] fixed bottom-0 right-0 
-        flex flex-col p-[var(--viewport-padding)] gap-[10px] 
-        w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] 
-        outline-none pointer-events-none" />
+              <ToastViewport class="[--viewport-padding:_25px] fixed bottom-0 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] outline-none pointer-events-none" />
             </ToastProvider>
           </div>
         </div>
@@ -95,7 +92,7 @@
           </div>
         </div>
 
-        
+
       </div>
     </div>
   </div>
@@ -104,7 +101,7 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { PassengerInfo, passengerInfo } from '@/interfaces/usePassengerInfo'
 import emailjs from '@emailjs/browser'
@@ -141,6 +138,12 @@ function generateReservationCode(): string {
   return 'VTC-' + Math.random().toString(36).substring(2, 8).toUpperCase()
 }
 
+
+
+
+const isPassengerInfoValid = computed(() => {
+  return passengerInfo.value && Object.keys(passengerInfo.value).length > 0;
+});
 
 
 // =============================
