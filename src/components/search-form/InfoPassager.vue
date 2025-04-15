@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import { ref, watch, defineEmits } from 'vue'
 
-// Emits
+// Emit setup
 const emit = defineEmits<{
   (e: 'update:info', value: {
     name: string;
@@ -53,10 +53,10 @@ const emit = defineEmits<{
     phone: string;
     passengers: string;
     baggage: string;
-  }): void
+  } | null): void
 }>()
 
-// Refs
+// Reactive fields
 const name = ref('')
 const email = ref('')
 const phone = ref('')
@@ -64,14 +64,24 @@ const passengers = ref('')
 const baggage = ref('')
 const baggageOptions = ['Aucun', '1', '2', '3', '4+']
 
-// Emit changes to parent
+// Watch and emit only when form is fully filled
 watch([name, email, phone, passengers, baggage], () => {
-  emit('update:info', {
-    name: name.value,
-    email: email.value,
-    phone: phone.value,
-    passengers: passengers.value,
-    baggage: baggage.value
-  })
+  if (
+    name.value.trim() &&
+    email.value.trim() &&
+    phone.value.trim() &&
+    passengers.value &&
+    baggage.value
+  ) {
+    emit('update:info', {
+      name: name.value,
+      email: email.value,
+      phone: phone.value,
+      passengers: passengers.value,
+      baggage: baggage.value
+    })
+  } else {
+    emit('update:info', null)
+  }
 })
 </script>

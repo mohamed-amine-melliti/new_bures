@@ -47,27 +47,34 @@
             </select>
           </div>
 
-          <!-- Reservation Button + Toast -->
+          <!-- Reservation Button -->
           <div class="pt-4">
             <ToastProvider>
-              <Button
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow transition"
-                @click="handleClick('personnalise')" :disabled="!isPassengerInfoValid">
+              <Button :disabled="!isPassengerInfoValid" :class="[
+                'w-full font-semibold py-2 px-4 rounded-md shadow transition',
+                isPassengerInfoValid
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
+                  : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+              ]" @click="isPassengerInfoValid && handleClick('forfaitaire')">
                 Réserver
               </Button>
-              <ReservationToast v-model:open="open" :eventDate="eventDateRef" :customCode="generateReservationCode()" />
-              <ToastViewport class="[--viewport-padding:_25px] fixed bottom-0 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] outline-none pointer-events-none" />
+
+              <ReservationToast v-if="isPassengerInfoValid" v-model:open="open" :eventDate="eventDateRef"
+                :customCode="generateReservationCode()" />
+              <ToastViewport class="[--viewport-padding:_25px] fixed top-4 left-1/2 transform -translate-x-1/2 
+         flex flex-col p-[var(--viewport-padding)] gap-[10px] 
+         w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] 
+         outline-none pointer-events-none" />
+
             </ToastProvider>
           </div>
         </div>
-
 
         <!-- Personnalisé Section -->
         <div v-else class="space-y-4">
           <div>
             <label class="block text-sm font-medium">Point de départ</label>
             <SearchBarDepart @placeSelected="handlePlaceSelected" />
-
           </div>
 
           <div>
@@ -77,21 +84,25 @@
 
           <div class="pt-4">
             <ToastProvider>
-              <Button
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow transition"
-                @click="handleClick('personnalise')">
+              <Button :disabled="!isPassengerInfoValid" :class="[
+                'w-full font-semibold py-2 px-4 rounded-md shadow transition',
+                isPassengerInfoValid
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
+                  : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+              ]" @click="isPassengerInfoValid && handleClick('personnalise')">
                 Réserver
               </Button>
-              <ReservationToast :open="open" :eventDate="eventDateRef" :customCode="generateReservationCode()"
-                :customText="prettyDate(eventDateRef)" />
-              <ToastViewport class="[--viewport-padding:_25px] fixed bottom-0 right-0 
-                flex flex-col p-[var(--viewport-padding)] gap-[10px] 
-                w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] 
-                outline-none pointer-events-none" />
+
+              <ReservationToast v-if="isPassengerInfoValid" :open="open" :eventDate="eventDateRef"
+                :customCode="generateReservationCode()" :customText="prettyDate(eventDateRef)" />
+              <ToastViewport class="[--viewport-padding:_25px] fixed top-4 left-1/2 transform -translate-x-1/2 
+              flex flex-col p-[var(--viewport-padding)] gap-[10px] 
+              w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] 
+              outline-none pointer-events-none" />
+
             </ToastProvider>
           </div>
         </div>
-
 
       </div>
     </div>
