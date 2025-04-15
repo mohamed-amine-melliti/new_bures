@@ -65,35 +65,43 @@ const emit = defineEmits(['select'])
 
 const cars = ref([
   {
-    id: '646ca7235452611fc99432b0',
+    id: '1',
     name: 'Toyota RAV 4',
     type: 'Toyota',
     img: 'https://catalogue.automobile.tn/big/2023/04/46056.png?t=1727028068',
   },
   {
-    id: '638157687592b0f2c57fc08f',
+    id: '2',
     name: 'Mercedes Vito',
     type: 'Mercedes',
     img: 'https://cdn-xy.drivek.com/eyJidWNrZXQiOiJkYXRhay1jZG4teHkiLCJrZXkiOiJjb25maWd1cmF0b3ItaW1ncy9jYXJzL2ZyL29yaWdpbmFsL01FUkNFREVTL1ZJVE8vNDQwMjlfVkFOLTQtRE9PUlMvbWVyY2VkZXMtYmVuei12aXRvLXRvdXJlci1mcm9udC12aWV3LmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6MTAyNCwiaGVpZ2h0IjpudWxsLCJmaXQiOiJjb3ZlciJ9fX0=',
   },
   {
-    id: '6731c0d440e03449fc079914',
+    id: '3',
     name: 'Mercedes Class V',
     type: 'Mercedes',
     img: 'https://catalogue.automobile.tn/big/2024/05/47140.png?t=1715188513',
   },
   {
-    id: '6731c0d20e68fb49fcfcfc43',
+    id: '4',
     name: 'Kia NERO',
     type: 'KIA',
     img: 'https://www.kia.com/content/dam/kwcms/kme/global/en/assets/vehicles/niro-sg2/discover/kia-niro-ev-sx-my23-trim.png',
   },
   {
-    id: '6731c0d20e68fb49fcfcfc43',
+    id: '5',
     name: 'Lexus NX 300',
     type: 'Lexus',
     img: 'https://www.fmdt.info/vehicle/lexus/2019/nx-300-32-white.png',
   },
+
+  {
+    id: '6',
+    name: 'Mercedes Classe E',
+    type: 'Mercedes',
+    img: 'assetsfiles/classE.png',
+  },
+
 ])
 
 function selectCar(car) {
