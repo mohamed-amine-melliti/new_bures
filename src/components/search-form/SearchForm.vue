@@ -221,9 +221,10 @@ function handleClick() {
     }
 
     store.commit('reservation/saveReservation', reservation)
+    console.log(reservation);
 
     // Send email via EmailJS ,
-    emailjs.send('service_zdhsvy8', 'template_xz5xbon', {
+    emailjs.send('', '', {
       to_email: passengerInfo.value.email,
       email: passengerInfo.value.email,
       name: passengerInfo.value.name,
