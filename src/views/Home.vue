@@ -22,9 +22,7 @@ export default defineComponent({
 
   components: {SearchForm, MapView, MyLocationBtn, TripDetails },
   setup(){
-    
     usePlacesStore()
-  
   }
 });
 </script>

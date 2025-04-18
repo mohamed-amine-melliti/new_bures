@@ -112,22 +112,37 @@
 
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed , defineProps } from 'vue'
 import { useStore } from 'vuex'
 import { PassengerInfo, passengerInfo } from '@/interfaces/usePassengerInfo'
 import emailjs from '@emailjs/browser'
 import ReservationToast from './ReservationToast.vue'
 import SearchBarDepart from '../searchbardestination/SearchBarDepart.vue'
-// 🔹 External UI Components
 import { ToastProvider, ToastViewport } from 'radix-vue'
-
-// 🔹 Internal Components
 import DateDepartPicker from './DateDepartPicker.vue'
 import SearchBar from '../searchbar/SearchBar.vue'
 import InfoPassager from './InfoPassager.vue'
 import { points } from '@/interfaces/points'
 import CarPickerTrigger from './CarPickerTrigger.vue'
+import type { Feature } from '@/interfaces/places'
 
+
+// ✅ Declare props
+const props = defineProps<{
+  selectedPlace: Feature | null
+}>()
+
+// =============================
+import { useSearchResults } from '@/composables/useSearchResults'
+const dummyEmit = () => {
+  // Intentionally empty: used as a placeholder for emit
+}
+const dummyProps = { selectedPlace: null }
+
+
+const {
+  onChoisirClicked
+} = useSearchResults(dummyProps, dummyEmit)
 // =============================
 // 🔸 Toast State & Logic
 // =============================
@@ -202,7 +217,7 @@ function handleClick() {
   open.value = false
   clearTimeout(timerRef.value)
 
-  timerRef.value = window.setTimeout(() => {
+  timerRef.value = window.setTimeout(async () => {
     eventDateRef.value = oneWeekAway()
     open.value = true
 
@@ -221,9 +236,11 @@ function handleClick() {
     }
 
     store.commit('reservation/saveReservation', reservation)
-    console.log(reservation);
+    console.log(reservation)
 
-    // Send email via EmailJS ,
+    // ✳️ Use onChoisirClicked from shared logic
+   
+
     emailjs.send('', '', {
       to_email: passengerInfo.value.email,
       email: passengerInfo.value.email,
@@ -232,7 +249,7 @@ function handleClick() {
       passengers: passengerInfo.value.passengers,
       baggage: passengerInfo.value.baggage,
       code,
-      date: prettyDate(eventDateRef.value)
+      date: prettyDate(eventDateRef.value),
     }, 'walt8N3u7ba3ic9lb')
       .then(() => {
         console.log('Email sent successfully!')
@@ -244,6 +261,7 @@ function handleClick() {
     console.log('Réservation:', reservation)
   }, 100)
 }
+
 
 // =============================
 // 🔸 Event Handlers from Children

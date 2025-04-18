@@ -21,6 +21,7 @@
   
   // Emit when value changes
   watch(departureDate, (newVal) => {
+    console.log('addrese départ',newVal)
     emit('update:departureDate', newVal)
   })
   </script>

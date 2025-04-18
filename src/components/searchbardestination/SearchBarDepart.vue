@@ -3,7 +3,7 @@ import { ref, watch, defineProps, defineEmits } from 'vue'
 import axios from 'axios'
 import { usePlacesStore } from '@/composables'
 import { toRaw } from 'vue';
-
+import { ReverseSearchResult } from '@/interfaces/places';
 // Props
 const props = defineProps<{
   placeholder: string
@@ -11,7 +11,7 @@ const props = defineProps<{
 
 // Emit
 const emit = defineEmits<{
-  (e: 'placeSelected', place: any): void
+  (e: 'placeSelected', place: ReverseSearchResult): void
 }>()
 
 // ✅ Pull from store

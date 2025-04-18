@@ -57,3 +57,33 @@ export interface Properties {
     category?:   string;
     maki?:       string;
 }
+
+
+export interface ReverseSearchResult {
+    place_id: number
+    licence: string
+    osm_type: string
+    osm_id: number
+    lat: number
+    lon: number
+    class: string
+    type: string
+    place_rank: number
+    importance: number
+    addresstype: string
+    display_name: string
+    boundingbox: [number, number, number, number]
+    name: string
+    address: {
+      road?: string
+      isolated_dwelling?: string
+      village?: string
+      town?: string
+      county?: string
+      state?: string
+      country?: string
+      postcode?: string
+      country_code?: string
+    }
+  }
+  
