@@ -124,76 +124,50 @@ import SearchBar from '../searchbar/SearchBar.vue'
 import InfoPassager from './InfoPassager.vue'
 import { points } from '@/interfaces/points'
 import CarPickerTrigger from './CarPickerTrigger.vue'
-import type { Feature } from '@/interfaces/places'
-
-
+import type { Feature, ReverseSearchResult } from '@/interfaces/places'
+import { useSearchResults } from '@/composables/useSearchResults'
 // ✅ Declare props
 const props = defineProps<{
   selectedPlace: Feature | null
 }>()
-
-// =============================
-import { useSearchResults } from '@/composables/useSearchResults'
-const dummyEmit = () => {
-  // Intentionally empty: used as a placeholder for emit
-}
-const dummyProps = { selectedPlace: null }
-
-
-const {
-  onChoisirClicked
-} = useSearchResults(dummyProps, dummyEmit)
 // =============================
 // 🔸 Toast State & Logic
 // =============================
 const open = ref(false)
 const eventDateRef = ref(new Date())
 const timerRef = ref(0)
-
 function oneWeekAway(): Date {
   const now = new Date()
   now.setDate(now.getDate() + 7)
   return now
 }
-
 function prettyDate(date: Date): string {
   return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'short' }).format(date)
 }
-
 function generateReservationCode(): string {
   return 'VTC-' + Math.random().toString(36).substring(2, 8).toUpperCase()
 }
-
-
-
-
 const isPassengerInfoValid = computed(() => {
   return passengerInfo.value && Object.keys(passengerInfo.value).length > 0;
 });
-
 
 // =============================
 // 🔸 Vuex Store
 // =============================
 const store = useStore()
-
 // =============================
 // 🔸 Reservation Tabs
 // =============================
 const tripType = ref('Forfaitaire')
 const departureDate = ref(null)
-
 const tabClass =
   'w-1/2 py-2 text-center text-sm text-gray-600 hover:bg-gray-200 transition'
 const activeTabClass =
   'w-1/2 py-2 text-center text-sm bg-white font-semibold border border-gray-300'
-
-
 // =============================
 // 🔸 Car Selection
 // =============================
 const selectedCar = ref(null)
-
 // =============================
 // 🔸 Forfaitaire Data
 // =============================
@@ -201,29 +175,23 @@ const forfaitDeparture = ref('')
 const forfaitDestination = ref('')
 const destinations = [...points]
 const departureText = ref('')
-
-
+const selectedPlace = ref<ReverseSearchResult | null>(null)
 const handlePlaceSelected = (place: any) => {
   departureText.value = place.display_name // 👈 Set input value
+  selectedPlace.value = place // Store the full object
 }
-
 // =============================
 // 🔸 Reservation Submit Handler
 // =============================
-
 emailjs.init('walt8N3u7ba3ic9lb') // Replace with your EmailJS public key
-
 function handleClick() {
   open.value = false
   clearTimeout(timerRef.value)
-
   timerRef.value = window.setTimeout(async () => {
     eventDateRef.value = oneWeekAway()
     open.value = true
-
     const code = generateReservationCode()
     const type = tripType.value === 'Forfaitaire' ? 'forfait' : 'personnalise'
-
     const reservation = {
       type,
       code,
@@ -233,13 +201,11 @@ function handleClick() {
       tripType: tripType.value,
       forfaitDeparture: forfaitDeparture.value,
       forfaitDestination: forfaitDestination.value,
+      location: selectedPlace.value,
     }
-
     store.commit('reservation/saveReservation', reservation)
     console.log(reservation)
-
     // ✳️ Use onChoisirClicked from shared logic
-   
 
     emailjs.send('', '', {
       to_email: passengerInfo.value.email,
@@ -261,8 +227,6 @@ function handleClick() {
     console.log('Réservation:', reservation)
   }, 100)
 }
-
-
 // =============================
 // 🔸 Event Handlers from Children
 // =============================
