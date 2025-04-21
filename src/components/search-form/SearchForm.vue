@@ -125,7 +125,7 @@ import InfoPassager from './InfoPassager.vue'
 import { points } from '@/interfaces/points'
 import CarPickerTrigger from './CarPickerTrigger.vue'
 import type { Feature, ReverseSearchResult } from '@/interfaces/places'
-import { useSearchResults } from '@/composables/useSearchResults'
+import { onChoisirClickedFromReverse } from '@/composables/useSearchResults'
 // ✅ Declare props
 const props = defineProps<{
   selectedPlace: Feature | null
@@ -205,7 +205,11 @@ function handleClick() {
     }
     store.commit('reservation/saveReservation', reservation)
     console.log(reservation)
-    // ✳️ Use onChoisirClicked from shared logic
+    //✳️Use onChoisirClicked from shared logic
+    
+
+    onChoisirClickedFromReverse()
+
 
     emailjs.send('', '', {
       to_email: passengerInfo.value.email,

@@ -36,34 +36,39 @@ export function useSearchResults(props: { selectedPlace: Feature | null }, emit:
   const onChoisirClicked = async (place: Feature) => {
     activePlace.value = place.id
     const [lng, lat] = place.center
-
     map.value?.flyTo({ center: [lng, lat], zoom: 14 })
-
     if (selectedExternalPlace.value) {
       const start = selectedExternalPlace.value
       const end: [number, number] = [lng, lat]
       await getRouteBetweenPoints(start, end)
     }
-
     emit('placeSelected', place)
   }
 
 
-
-  const onChoisirClickedFromReverse = async (place: ReverseSearchResult) => {
-    const lng = place.lon
-    const lat = place.lat
-
-    map.value?.flyTo({ center: [lng, lat], zoom: 14 })
-
-    if (selectedExternalPlace.value) {
-      const start = selectedExternalPlace.value
-      const end: [number, number] = [lng, lat]
-      await getRouteBetweenPoints(start, end)
-    }
-
-    emit('placeSelected', place)
-  }
+  // async function calculateRouteBetweenSelectedPlaces() {
+  //   if (!departurePlace.value || !destinationPlace.value) return
+  
+  //   const start: [number, number] = [
+  //     Number(departurePlace.value.lon),
+  //     Number(departurePlace.value.lat)
+  //   ]
+  
+  //   const end: [number, number] = [
+  //     Number(destinationPlace.value.lon),
+  //     Number(destinationPlace.value.lat)
+  //   ]
+  
+  //   // Move camera to destination
+  //   map.value?.flyTo({ center: end, zoom: 14 })
+  
+  //   // Calculate distance
+  //   routeDistance.value = haversineDistance(start, end)
+  //   console.log(`Distance: ${routeDistance.value.toFixed(2)} km`)
+  
+  //   // Show route
+  //   await getRouteBetweenPoints(start, end)
+  // }
 
   return {
     isLoadingPlaces,
@@ -71,5 +76,6 @@ export function useSearchResults(props: { selectedPlace: Feature | null }, emit:
     activePlace,
     onPlaceClicked,
     onChoisirClicked,
+    //onChoisirClickedFromReverse
   }
 }
