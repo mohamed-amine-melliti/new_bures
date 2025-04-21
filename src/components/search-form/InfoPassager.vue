@@ -85,3 +85,8 @@ watch([name, email, phone, passengers, baggage], () => {
   }
 })
 </script>
+
+
+<style scoped>
+
+</style>

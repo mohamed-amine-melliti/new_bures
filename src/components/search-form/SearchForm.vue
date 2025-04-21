@@ -1,109 +1,124 @@
 <template>
-  <div class="fixed top-6 left-4 w-[95vw] max-w-xl max-h-[90vh] rounded-xl z-50 p-4 flex flex-col overflow-hidden">
-    <div class="overflow-y-auto h-full space-y-4 pr-2 hide-scrollbar">
-      <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-4 space-y-4">
-        <!-- Car Picker -->
-        <CarPickerTrigger v-model="selectedCar" />
+  <!-- ✅ Mobile Toggle Button -->
+  <div class="fixed top-4 left-4 z-50 lg:hidden">
+    <button @click="showForm = !showForm" class="bg-white shadow-md rounded-full p-2 border border-gray-300"
+      aria-label="Toggle reservation form">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
 
-        <!-- Passenger Info -->
-        <InfoPassager @update:info="handleInfoUpdate" />
+  <!-- ✅ Form Container (Toggled on Mobile, Always visible on Desktop) -->
+  <div
+    :class="[
+      'fixed top-6 left-4 w-[95vw] max-w-xl max-h-[90vh] rounded-xl z-40 p-4 flex flex-col',
+      'lg:block',
+      showForm ? 'block' : 'hidden'
+    ]"
+  >
+    <!-- ✅ Scrollable wrapper -->
+    <div class="flex flex-col h-full overflow-hidden">
+      <div class="flex-1 overflow-y-auto pr-2 hide-scrollbar max-h-[calc(90vh-3rem)]">
+        <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-4 space-y-4">
+          <!-- Car Picker -->
+          <CarPickerTrigger v-model="selectedCar" />
 
-        <!-- Departure Date -->
-        <DateDepartPicker @update:departureDate="handleDateChange" />
+          <!-- Passenger Info -->
+          <InfoPassager @update:info="handleInfoUpdate" />
 
-        <!-- Trip Type Tabs -->
-        <div class="flex bg-gray-100 rounded-md overflow-hidden w-full">
-          <button :class="tripType === 'Forfaitaire' ? activeTabClass : tabClass" @click="tripType = 'Forfaitaire'">
-            Forfaitaire
-          </button>
-          <button :class="tripType === 'Personnalisé' ? activeTabClass : tabClass" @click="tripType = 'Personnalisé'">
-            Personnalisé
-          </button>
+          <!-- Departure Date -->
+          <DateDepartPicker @update:departureDate="handleDateChange" />
+
+          <!-- Trip Type Tabs -->
+          <div class="flex bg-gray-100 rounded-md overflow-hidden w-full">
+            <button :class="tripType === 'Forfaitaire' ? activeTabClass : tabClass" @click="tripType = 'Forfaitaire'">
+              Forfaitaire
+            </button>
+            <button :class="tripType === 'Personnalisé' ? activeTabClass : tabClass" @click="tripType = 'Personnalisé'">
+              Personnalisé
+            </button>
+          </div>
+
+          <!-- Forfaitaire Section -->
+          <div v-if="tripType === 'Forfaitaire'" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium">Point de départ</label>
+              <select v-model="forfaitDeparture" class="w-full border rounded-md p-2">
+                <option disabled value="">Choisissez un point</option>
+                <option v-for="point in points" :key="point.value" :value="point.value"
+                  :disabled="point.value === forfaitDestination">
+                  {{ point.label }}
+                </option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium">Destination</label>
+              <select v-model="forfaitDestination" class="w-full border rounded-md p-2">
+                <option disabled value="">Choisissez une destination</option>
+                <option v-for="destination in destinations" :key="destination.value" :value="destination.value"
+                  :disabled="destination.value === forfaitDeparture">
+                  {{ destination.label }}
+                </option>
+              </select>
+            </div>
+
+            <div class="pt-4">
+              <ToastProvider>
+                <Button :disabled="!isPassengerInfoValid" :class="[
+                  'w-full font-semibold py-2 px-4 rounded-md shadow transition',
+                  isPassengerInfoValid
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
+                    : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                ]" @click="isPassengerInfoValid && handleClick('forfaitaire')">
+                  Réserver
+                </Button>
+
+                <ReservationToast v-if="isPassengerInfoValid" v-model:open="open" :eventDate="eventDateRef"
+                  :customCode="generateReservationCode()" />
+                <ToastViewport class="[--viewport-padding:_25px] fixed top-4 left-1/2 transform -translate-x-1/2 
+                  flex flex-col p-[var(--viewport-padding)] gap-[10px] 
+                  w-[390px] max-w-[100vw] z-[2147483647] 
+                  outline-none pointer-events-none" />
+              </ToastProvider>
+            </div>
+          </div>
+
+          <!-- Personnalisé Section -->
+          <div v-else class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium">Point de départ</label>
+              <SearchBarDepart @placeSelected="handlePlaceSelected" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium">Destination</label>
+              <SearchBar :placeholder="'Votre point de départ'" v-model="departureText" />
+            </div>
+
+            <div class="pt-4">
+              <ToastProvider>
+                <Button :disabled="!isPassengerInfoValid" :class="[
+                  'w-full font-semibold py-2 px-4 rounded-md shadow transition',
+                  isPassengerInfoValid
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
+                    : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                ]" @click="isPassengerInfoValid && handleClick('personnalise')">
+                  Réserver
+                </Button>
+
+                <ReservationToast v-if="isPassengerInfoValid" :open="open" :eventDate="eventDateRef"
+                  :customCode="generateReservationCode()" :customText="prettyDate(eventDateRef)" />
+                <ToastViewport class="[--viewport-padding:_25px] fixed top-4 left-1/2 transform -translate-x-1/2 
+                  flex flex-col p-[var(--viewport-padding)] gap-[10px] 
+                  w-[390px] max-w-[100vw] z-[2147483647] 
+                  outline-none pointer-events-none" />
+              </ToastProvider>
+            </div>
+          </div>
         </div>
-
-        <!-- Forfaitaire Section -->
-        <div v-if="tripType === 'Forfaitaire'" class="space-y-4">
-          <!-- Point de départ -->
-          <div>
-            <label class="block text-sm font-medium">Point de départ</label>
-            <select v-model="forfaitDeparture" class="w-full border rounded-md p-2">
-              <option disabled value="">Choisissez un point</option>
-              <option v-for="point in points" :key="point.value" :value="point.value"
-                :disabled="point.value === forfaitDestination">
-                {{ point.label }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Destination -->
-          <div>
-            <label class="block text-sm font-medium">Destination</label>
-            <select v-model="forfaitDestination" class="w-full border rounded-md p-2">
-              <option disabled value="">Choisissez une destination</option>
-              <option v-for="destination in destinations" :key="destination.value" :value="destination.value"
-                :disabled="destination.value === forfaitDeparture">
-                {{ destination.label }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Reservation Button -->
-          <div class="pt-4">
-            <ToastProvider>
-              <Button :disabled="!isPassengerInfoValid" :class="[
-                'w-full font-semibold py-2 px-4 rounded-md shadow transition',
-                isPassengerInfoValid
-                  ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
-                  : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-              ]" @click="isPassengerInfoValid && handleClick('forfaitaire')">
-                Réserver
-              </Button>
-
-              <ReservationToast v-if="isPassengerInfoValid" v-model:open="open" :eventDate="eventDateRef"
-                :customCode="generateReservationCode()" />
-              <ToastViewport class="[--viewport-padding:_25px] fixed top-4 left-1/2 transform -translate-x-1/2 
-         flex flex-col p-[var(--viewport-padding)] gap-[10px] 
-         w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] 
-         outline-none pointer-events-none" />
-
-            </ToastProvider>
-          </div>
-        </div>
-
-        <!-- Personnalisé Section -->
-        <div v-else class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium">Point de départ</label>
-            <SearchBarDepart @placeSelected="handlePlaceSelected" />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium">Destination</label>
-            <SearchBar :placeholder="'Votre point de départ'" v-model="departureText" />
-          </div>
-
-          <div class="pt-4">
-            <ToastProvider>
-              <Button :disabled="!isPassengerInfoValid" :class="[
-                'w-full font-semibold py-2 px-4 rounded-md shadow transition',
-                isPassengerInfoValid
-                  ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
-                  : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-              ]" @click="isPassengerInfoValid && handleClick('personnalise')">
-                Réserver
-              </Button>
-
-              <ReservationToast v-if="isPassengerInfoValid" :open="open" :eventDate="eventDateRef"
-                :customCode="generateReservationCode()" :customText="prettyDate(eventDateRef)" />
-              <ToastViewport class="[--viewport-padding:_25px] fixed top-4 left-1/2 transform -translate-x-1/2 
-              flex flex-col p-[var(--viewport-padding)] gap-[10px] 
-              w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] 
-              outline-none pointer-events-none" />
-
-            </ToastProvider>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
@@ -111,8 +126,11 @@
 
 
 
+
+
+
 <script setup lang="ts">
-import { ref, computed , defineProps } from 'vue'
+import { ref, computed, defineProps } from 'vue'
 import { useStore } from 'vuex'
 import { PassengerInfo, passengerInfo } from '@/interfaces/usePassengerInfo'
 import emailjs from '@emailjs/browser'
@@ -126,6 +144,9 @@ import { points } from '@/interfaces/points'
 import CarPickerTrigger from './CarPickerTrigger.vue'
 import type { Feature, ReverseSearchResult } from '@/interfaces/places'
 import { onChoisirClickedFromReverse } from '@/composables/useSearchResults'
+
+const showForm = ref(false)
+
 // ✅ Declare props
 const props = defineProps<{
   selectedPlace: Feature | null
@@ -206,7 +227,7 @@ function handleClick() {
     store.commit('reservation/saveReservation', reservation)
     console.log(reservation)
     //✳️Use onChoisirClicked from shared logic
-    
+
 
     onChoisirClickedFromReverse()
 
