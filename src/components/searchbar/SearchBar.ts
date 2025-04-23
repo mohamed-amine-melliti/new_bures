@@ -6,7 +6,7 @@ import { TabsContent, TabsIndicator, TabsList, TabsRoot, TabsTrigger } from 'rek
 
 export default defineComponent({
   name: 'SearchBar',
-  emits: ['update:modelValue'], // emits value to v-model
+  emits: ['update:modelValue'],
   components: {
     TabsContent,
     TabsIndicator,
@@ -23,6 +23,10 @@ export default defineComponent({
     modelValue: {
       type: String,
       default: '',
+    },
+    car: {
+      type: Object,
+      default: null,
     },
   },
   setup(props, { emit }) {
@@ -45,11 +49,10 @@ export default defineComponent({
       }
     })
 
-    // 🔥 Called when a place is selected from SearchResults
     const handlePlaceSelected = (place: any) => {
       const selectedName = place.place_name || place.display_name || ''
-      searchTerm.value = selectedName           // update input
-      emit('update:modelValue', selectedName)   // emit to parent
+      searchTerm.value = selectedName
+      emit('update:modelValue', selectedName)
     }
 
     watch(() => props.modelValue, (newVal) => {
@@ -58,10 +61,13 @@ export default defineComponent({
       }
     })
 
+    // You now have access to props.car inside setup()
+    console.log('Selected car from parent:', props.car)
+
     return {
       searchTerm,
       searchResults,
-      handlePlaceSelected, // expose handler for SearchResults
+      handlePlaceSelected,
     }
   }
 })

@@ -5,6 +5,7 @@ export interface MapState {
     markers: mapboxgl.Marker[];
     distance?: number;
     duration?: number;
+    pricePerKm?: number;
 }
 
 function state(): MapState {
@@ -12,7 +13,8 @@ function state(): MapState {
         map: undefined,
         markers: [],
         distance: undefined,
-        duration: undefined
+        duration: undefined,
+        pricePerKm: undefined, 
     }
 }
 

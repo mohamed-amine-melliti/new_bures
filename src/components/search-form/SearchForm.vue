@@ -95,7 +95,8 @@
 
             <div>
               <label class="block text-sm font-medium">Destination</label>
-              <SearchBar :placeholder="'Votre point de départ'" v-model="departureText" />
+              <SearchBar :placeholder="'Votre point de départ'" :car="selectedCar" v-model="departureText" />
+
             </div>
 
             <div class="pt-4">

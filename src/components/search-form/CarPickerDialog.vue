@@ -68,9 +68,11 @@ import {
 } from 'radix-vue'
 
 import { defineEmits, ref } from 'vue'
+import { useStore } from 'vuex'
 
 const emit = defineEmits(['select'])
 const selectedCar = ref(null)
+const store = useStore()
 
 const cars = ref([
   {
@@ -121,6 +123,9 @@ const cars = ref([
 function selectCar(car) {
   selectedCar.value = car
   emit('select', car)
+
+  store.commit('setPricePerKm', car.pricePerKm)
+
 }
 </script>
 

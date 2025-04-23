@@ -2,7 +2,7 @@
     <div v-if="distance" class="trip-container column">
         <div class="col">Distance: <strong>{{ distance }} Kms</strong></div>
         <div class="col">Durée: <strong>{{ duration }} Hours</strong></div>
-        <div class="col">Prix: <strong>{{  }} Euro</strong></div>
+        <div class="col">Prix: <strong>{{ pricePerKm  }} Euro</strong></div>
 
     </div>
 </template>
@@ -15,11 +15,12 @@ export default defineComponent({
     name: 'TripDetails',
     setup(){
 
-        const {distance, duration} = useMapStore()
+        const {distance, duration , pricePerKm} = useMapStore()
 
         return{
             distance,
-            duration
+            duration,
+            pricePerKm
         }
     }
 })
