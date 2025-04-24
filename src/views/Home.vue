@@ -2,7 +2,7 @@
   <MapView/>
   <MyLocationBtn/>
 
-  <!-- <SearchForm/> -->
+  <SearchForm></SearchForm>
 
   <TripDetails/>
 </template>
