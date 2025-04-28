@@ -22,12 +22,12 @@
             @click="selectCar(car)"
             class="group relative flex items-center gap-4 rounded-xl border transition-all duration-200 cursor-pointer p-3
               shadow-sm hover:shadow-md"
-            :class="selectedCar?.id === car.id ? 'border-green-500 ring-2 ring-green-500 bg-green-50' : 'border-gray-200 bg-white hover:border-gray-300'"
+            :class="selectedCar?.id === car.id ? 'border-gray-900 ring-2 ring-gray-900 bg-gray-50' : 'border-gray-200 bg-white hover:border-gray-300'"
           >
             <!-- ✅ Checkmark Icon -->
             <div
               v-if="selectedCar?.id === car.id"
-              class="absolute bottom-2 right-2 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md animate-zoom-in"
+              class="absolute bottom-2 right-2 bg-gray-900 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md animate-zoom-in"
             >
               ✓
             </div>
@@ -43,8 +43,14 @@
 
             <!-- Car Info -->
             <div class="flex flex-col justify-center overflow-hidden">
-              <span class="text-sm font-semibold text-gray-900 truncate">{{ car.name }}</span>
-              <span class="text-xs text-gray-500 truncate">{{ car.type }}</span>
+              <div class="flex items-center justify-between w-full">
+                <span class="text-base font-semibold text-gray-800 truncate">{{ car.name }}</span>
+              </div>
+
+              <!-- Price per Km -->
+              <div class="flex items-center mt-2">
+                <span class="text-sm font-semibold text-gray-900">€ {{ car.pricePerKm }} / km</span>
+              </div>
             </div>
           </div>
         </div>
@@ -55,6 +61,11 @@
     </DialogPortal>
   </DialogRoot>
 </template>
+
+
+
+
+
 
 <script setup>
 import {
@@ -108,7 +119,7 @@ const cars = ref([
     name: 'Lexus NX 300',
     type: 'Lexus',
     img: 'https://www.fmdt.info/vehicle/lexus/2019/nx-300-32-white.png',
-    pricePerKm: 2.0, // Assuming Lexus is luxury/berline category
+    pricePerKm: 2.0,
   },
   {
     id: '6',
@@ -117,7 +128,15 @@ const cars = ref([
     img: 'assetsfiles/classE.png',
     pricePerKm: 2.0,
   },
-])
+  {
+    id: '7',
+    name: 'Bentley Bentayga',
+    type: 'Bentley',
+    img: 'https://images.dealer.com/ddc/vehicles/2023/Bentley/Bentayga/SUV/perspective/front-left/2023_24.png',
+    pricePerKm: 4.5, // Assuming higher price for luxury SUV
+  },
+]);
+
 
 
 function selectCar(car) {
