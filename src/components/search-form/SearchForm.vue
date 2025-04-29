@@ -233,7 +233,7 @@ const handleClick = async () => {
         // Optional: Perform any additional actions like clearing local storage
         localStorage.clear()  // Clear local storage (customize if needed)
         // Redirect or navigate to another page, if needed
-      
+        window.location.replace(window.location.origin + '/#/success')
       } else {
         // Handle error if statusCode is not 201 (successful)
         console.error('Failed to create reservation: ' + (response.message || 'Unknown error'))
@@ -264,6 +264,9 @@ const handleClick = async () => {
       console.error('Error sending email:', error)
     }
   }, 100)
+
+  window.location.replace(window.location.origin + '/#/success')
+
 }
 
 // ✅ Event handlers
