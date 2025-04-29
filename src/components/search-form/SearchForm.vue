@@ -143,71 +143,61 @@ import InfoPassager from './InfoPassager.vue'
 import { points } from '@/interfaces/points'
 import CarPickerTrigger from './CarPickerTrigger.vue'
 
-// UI state
-const showForm = ref(false)
-const tripType = ref('Forfaitaire')
-const tabClass = 'w-1/2 py-2 text-center text-sm text-gray-600 hover:bg-gray-200 transition'
-const activeTabClass = 'w-1/2 py-2 text-center text-sm bg-white font-semibold border border-gray-300'
+// ✅ UI tab classes
+const tabClass =
+  'w-1/2 py-2 text-center text-sm text-gray-600 hover:bg-gray-200 transition'
+const activeTabClass =
+  'w-1/2 py-2 text-center text-sm bg-white font-semibold border border-gray-300'
 
-// Data
+// ✅ Reactive state
+const showForm = ref(false)
 const selectedCar = ref(null)
 const forfaitDeparture = ref('')
 const forfaitDestination = ref('')
+const destinations = [...points] // ✅ This was missing
+const eventDateRef = ref(new Date())
+const tripType = ref('Forfaitaire')
 const departureText = ref('')
 const selectedPlace = ref(null)
-const eventDateRef = ref(new Date())
 
-// Toast & Process flags
-const open = ref(false)
+// ✅ Form validation: only show button when all fields are filled
+const isFormValid = computed(() => {
+  return (
+    selectedCar.value &&
+    forfaitDeparture.value &&
+    forfaitDestination.value &&
+    Object.keys(passengerInfo.value || {}).length > 0
+  )
+})
+
+// ✅ Toast & Reservation logic
 const isProcessing = ref(false)
+const open = ref(false)
 const timerRef = ref(0)
 
-// Vuex store
-const store = useStore()
-
-// ✅ Init EmailJS
-emailjs.init('walt8N3u7ba3ic9lb')
-
-// ✅ Utility: Generate Code + Date Formatting
 function generateReservationCode(): string {
   return 'VTC-' + Math.random().toString(36).substring(2, 8).toUpperCase()
 }
 
 function prettyDate(date: Date): string {
-  return new Intl.DateTimeFormat('fr-FR', {
-    dateStyle: 'full',
-    timeStyle: 'short',
-  }).format(date)
+  return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'short' }).format(date)
 }
 
-// ✅ Computed: Full Form Validation
-const isFormValid = computed(() => {
-  const info = passengerInfo.value
-  return (
-    selectedCar.value &&
-    forfaitDeparture.value &&
-    forfaitDestination.value &&
-    eventDateRef.value &&
-    info &&
-    info.name?.trim() &&
-    info.email?.trim() &&
-    info.phone?.trim() &&
-    info.passengers &&
-    info.baggage
-  )
-})
+// ✅ Vuex store and submission
+const store = useStore()
+emailjs.init('walt8N3u7ba3ic9lb')
 
-// ✅ Handler: Form Submit
 const handleClick = () => {
   if (isProcessing.value) return
   isProcessing.value = true
+
   open.value = false
   clearTimeout(timerRef.value as number)
-
   timerRef.value = setTimeout(async () => {
     eventDateRef.value = new Date()
     eventDateRef.value.setDate(eventDateRef.value.getDate() + 7)
 
+    open.value = true
     const code = generateReservationCode()
     const type = tripType.value === 'Forfaitaire' ? 'forfait' : 'personnalise'
 
@@ -225,7 +215,6 @@ const handleClick = () => {
 
     store.commit('reservation/saveReservation', reservation)
 
-    // Send email via EmailJS
     emailjs
       .send('', '', {
         to_email: passengerInfo.value.email,
@@ -237,20 +226,16 @@ const handleClick = () => {
         code,
         date: prettyDate(eventDateRef.value),
       })
-      .then(() => {
-        console.log('Email sent successfully!')
-      })
-      .catch((error) => {
-        console.error('Email send error:', error)
-      })
+      .then(() => console.log('Email sent successfully!'))
+      .catch((error) => console.error('Email send error:', error))
 
-    open.value = true
     window.location.replace(window.location.origin + '/#/success')
+    console.log('Réservation:', reservation)
     isProcessing.value = false
   }, 100)
 }
 
-// ✅ Handlers for Child Events
+// ✅ Event handlers
 function handlePlaceSelected(place: any) {
   departureText.value = place.display_name
   selectedPlace.value = place
@@ -265,7 +250,8 @@ function handleInfoUpdate(data: PassengerInfo) {
   console.log('Received from child:', data)
 }
 </script>
-                                                                                                                  
+
+
 
 
 <style scoped>
