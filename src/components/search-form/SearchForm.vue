@@ -11,13 +11,11 @@
   </div>
 
   <!-- ✅ Form Container (Toggled on Mobile, Always visible on Desktop) -->
-  <div
-    :class="[
-      'fixed top-6 left-4 w-[95vw] max-w-xl max-h-[90vh] rounded-xl z-40 p-4 flex flex-col',
-      'lg:block',
-      showForm ? 'block' : 'hidden'
-    ]"
-  >
+  <div :class="[
+    'fixed top-6 left-4 w-[95vw] max-w-xl max-h-[90vh] rounded-xl z-40 p-4 flex flex-col',
+    'lg:block',
+    showForm ? 'block' : 'hidden'
+  ]">
     <!-- ✅ Scrollable wrapper -->
     <div class="flex flex-col h-full overflow-hidden">
       <div class="flex-1 overflow-y-auto pr-2 hide-scrollbar max-h-[calc(90vh-3rem)]">
@@ -187,12 +185,14 @@ function prettyDate(date: Date): string {
 const store = useStore()
 emailjs.init('walt8N3u7ba3ic9lb')
 
-const handleClick = () => {
-  if (isProcessing.value) return
-  isProcessing.value = true
+const handleClick = async () => {
+  const isLoading = ref(false)  // Reactive variable for loading state
+
+  if (isLoading.value) return
+  isLoading.value = true
 
   open.value = false
-  clearTimeout(timerRef.value as number)
+  clearTimeout(timerRef.value)
   timerRef.value = setTimeout(async () => {
     eventDateRef.value = new Date()
     eventDateRef.value.setDate(eventDateRef.value.getDate() + 7)
@@ -214,7 +214,11 @@ const handleClick = () => {
     }
 
     try {
-      await fetch('/api/reservation', {
+      // Set loading state to true
+      isLoading.value = true
+
+      // Use the native fetch function instead of $fetch (assuming no Nuxt)
+      const res = await fetch('/api/reservation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -222,9 +226,29 @@ const handleClick = () => {
         body: JSON.stringify(reservation),
       })
 
-      store.commit('reservation/saveReservation', reservation)
+      // Handle the successful creation response
+      const response = await res.json()
+      if (response.statusCode === 201) {
+        console.log('Reservation created successfully!')
+        // Optional: Perform any additional actions like clearing local storage
+        localStorage.clear()  // Clear local storage (customize if needed)
+        // Redirect or navigate to another page, if needed
+      
+      } else {
+        // Handle error if statusCode is not 201 (successful)
+        console.error('Failed to create reservation: ' + (response.message || 'Unknown error'))
+      }
+    } catch (error) {
+      // Handle any errors that occur during the API request
+      console.error(error)
+    } finally {
+      // Set loading state back to false once the request is complete
+      isLoading.value = false
+    }
 
-      await emailjs.send('', '', {
+    try {
+      // Send the reservation confirmation email
+      await emailjs.send('your_service_id', 'your_template_id', {
         to_email: passengerInfo.value.email,
         email: passengerInfo.value.email,
         name: passengerInfo.value.name,
@@ -236,11 +260,8 @@ const handleClick = () => {
       })
 
       console.log('Email sent and reservation saved!')
-    //window.location.replace(window.location.origin + '/#/success')
     } catch (error) {
-      console.error('Error during reservation:', error)
-    } finally {
-      isProcessing.value = false
+      console.error('Error sending email:', error)
     }
   }, 100)
 }

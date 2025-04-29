@@ -26,7 +26,7 @@
         <label class="block text-sm">Passagers</label>
         <select v-model="passengers" class="w-full border rounded-md p-2">
           <option disabled value="">Select</option>
-          <option v-for="p in 7" :key="p">{{ p }}</option>
+          <option v-for="p in 8" :key="p">{{ p }}</option>
         </select>
       </div>
 
@@ -62,7 +62,7 @@ const email = ref('')
 const phone = ref('')
 const passengers = ref('')
 const baggage = ref('')
-const baggageOptions = ['Aucun', '1', '2', '3', '4+']
+const baggageOptions = ['Aucun', '1', '2', '3', '4','5','6','7','8 ( Cabine )',' 8( Cabine ) + 1 ( En soute )']
 
 // Watch and emit only when form is fully filled
 watch([name, email, phone, passengers, baggage], () => {
