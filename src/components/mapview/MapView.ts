@@ -22,7 +22,11 @@ export default defineComponent({
         container: mapElement.value,
         style: 'mapbox://styles/mapbox/streets-v12',
         center,
-        zoom: 12, // Slightly closer zoom for city view
+        zoom: 5.5, // Adjusted to show most of France
+        maxBounds: [
+          [-5.5, 41.0], // Southwest corner of France
+          [9.5, 51.5],  // Northeast corner of France
+        ],
       });
 
       if (userLocation.value) {
