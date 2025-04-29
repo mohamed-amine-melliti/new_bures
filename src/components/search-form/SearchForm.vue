@@ -213,10 +213,18 @@ const handleClick = () => {
       location: selectedPlace.value,
     }
 
-    store.commit('reservation/saveReservation', reservation)
+    try {
+      await fetch('/api/reservation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reservation),
+      })
 
-    emailjs
-      .send('', '', {
+      store.commit('reservation/saveReservation', reservation)
+
+      await emailjs.send('', '', {
         to_email: passengerInfo.value.email,
         email: passengerInfo.value.email,
         name: passengerInfo.value.name,
@@ -226,14 +234,17 @@ const handleClick = () => {
         code,
         date: prettyDate(eventDateRef.value),
       })
-      .then(() => console.log('Email sent successfully!'))
-      .catch((error) => console.error('Email send error:', error))
 
-    window.location.replace(window.location.origin + '/#/success')
-    console.log('Réservation:', reservation)
-    isProcessing.value = false
+      console.log('Email sent and reservation saved!')
+      window.location.replace(window.location.origin + '/#/success')
+    } catch (error) {
+      console.error('Error during reservation:', error)
+    } finally {
+      isProcessing.value = false
+    }
   }, 100)
 }
+
 
 // ✅ Event handlers
 function handlePlaceSelected(place: any) {
