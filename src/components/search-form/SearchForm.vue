@@ -164,7 +164,7 @@ const selectedPlace = ref(null)
 const isFormValid = computed(() => {
   return (
     selectedCar.value &&
-    forfaitDeparture.value &&
+    forfaitDeparture.value ||
     forfaitDestination.value &&
     Object.keys(passengerInfo.value || {}).length > 0
   )
@@ -236,7 +236,7 @@ const handleClick = () => {
       })
 
       console.log('Email sent and reservation saved!')
-      window.location.replace(window.location.origin + '/#/success')
+    //window.location.replace(window.location.origin + '/#/success')
     } catch (error) {
       console.error('Error during reservation:', error)
     } finally {
@@ -244,7 +244,6 @@ const handleClick = () => {
     }
   }, 100)
 }
-
 
 // ✅ Event handlers
 function handlePlaceSelected(place: any) {
