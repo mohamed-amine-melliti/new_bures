@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",                         // Changed from "es5" for better modern support
+    "target": "esnext",
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
@@ -22,7 +22,8 @@
       "dom.iterable"
     ],
     "types": [
-      "vite/client"
+      "vite/client",
+      "node"
     ]
   },
   "include": [
