@@ -67,16 +67,16 @@
 
             <div class="pt-4">
               <ToastProvider>
-                <Button :disabled="!isPassengerInfoValid" :class="[
+                <Button :disabled="!isFormValid" :class="[
                   'w-full font-semibold py-2 px-4 rounded-md shadow transition',
-                  isPassengerInfoValid
+                  isFormValid
                     ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
                     : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                ]" @click="isPassengerInfoValid && handleClick('forfaitaire')">
+                ]" @click="isFormValid && handleClick('forfaitaire')">
                   Réserver
                 </Button>
 
-                <ReservationToast v-if="isPassengerInfoValid" v-model:open="open" :eventDate="eventDateRef"
+                <ReservationToast v-if="isFormValid" v-model:open="open" :eventDate="eventDateRef"
                   :customCode="generateReservationCode()" />
                 <ToastViewport class="[--viewport-padding:_25px] fixed top-4 left-1/2 transform -translate-x-1/2 
                   flex flex-col p-[var(--viewport-padding)] gap-[10px] 
@@ -96,21 +96,20 @@
             <div>
               <label class="block text-sm font-medium">Destination</label>
               <SearchBar :placeholder="'Votre point de départ'" :car="selectedCar" v-model="departureText" />
-
             </div>
 
             <div class="pt-4">
               <ToastProvider>
-                <Button :disabled="!isPassengerInfoValid" :class="[
+                <Button :disabled="!isFormValid" :class="[
                   'w-full font-semibold py-2 px-4 rounded-md shadow transition',
-                  isPassengerInfoValid
+                  isFormValid
                     ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
                     : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                ]" @click="isPassengerInfoValid && handleClick('personnalise')">
+                ]" @click="isFormValid && handleClick('personnalise')">
                   Réserver
                 </Button>
 
-                <ReservationToast v-if="isPassengerInfoValid" :open="open" :eventDate="eventDateRef"
+                <ReservationToast v-if="isFormValid" :open="open" :eventDate="eventDateRef"
                   :customCode="generateReservationCode()" :customText="prettyDate(eventDateRef)" />
                 <ToastViewport class="[--viewport-padding:_25px] fixed top-4 left-1/2 transform -translate-x-1/2 
                   flex flex-col p-[var(--viewport-padding)] gap-[10px] 
@@ -143,77 +142,75 @@ import SearchBar from '../searchbar/SearchBar.vue'
 import InfoPassager from './InfoPassager.vue'
 import { points } from '@/interfaces/points'
 import CarPickerTrigger from './CarPickerTrigger.vue'
-import type { Feature, ReverseSearchResult } from '@/interfaces/places'
-import { onChoisirClickedFromReverse } from '@/composables/useSearchResults'
 
+// UI state
 const showForm = ref(false)
+const tripType = ref('Forfaitaire')
+const tabClass = 'w-1/2 py-2 text-center text-sm text-gray-600 hover:bg-gray-200 transition'
+const activeTabClass = 'w-1/2 py-2 text-center text-sm bg-white font-semibold border border-gray-300'
 
-// ✅ Declare props
-const props = defineProps<{
-  selectedPlace: Feature | null
-}>()
-// =============================
-// 🔸 Toast State & Logic
-// =============================
-const open = ref(false)
+// Data
+const selectedCar = ref(null)
+const forfaitDeparture = ref('')
+const forfaitDestination = ref('')
+const departureText = ref('')
+const selectedPlace = ref(null)
 const eventDateRef = ref(new Date())
+
+// Toast & Process flags
+const open = ref(false)
+const isProcessing = ref(false)
 const timerRef = ref(0)
-function oneWeekAway(): Date {
-  const now = new Date()
-  now.setDate(now.getDate() + 7)
-  return now
-}
-function prettyDate(date: Date): string {
-  return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'short' }).format(date)
-}
+
+// Vuex store
+const store = useStore()
+
+// ✅ Init EmailJS
+emailjs.init('walt8N3u7ba3ic9lb')
+
+// ✅ Utility: Generate Code + Date Formatting
 function generateReservationCode(): string {
   return 'VTC-' + Math.random().toString(36).substring(2, 8).toUpperCase()
 }
-const isPassengerInfoValid = computed(() => {
-  return passengerInfo.value && Object.keys(passengerInfo.value).length > 0;
-});
 
-// =============================
-// 🔸 Vuex Store
-// =============================
-const store = useStore()
-// =============================
-// 🔸 Reservation Tabs
-// =============================
-const tripType = ref('Forfaitaire')
-const departureDate = ref(null)
-const tabClass =
-  'w-1/2 py-2 text-center text-sm text-gray-600 hover:bg-gray-200 transition'
-const activeTabClass =
-  'w-1/2 py-2 text-center text-sm bg-white font-semibold border border-gray-300'
-// =============================
-// 🔸 Car Selection
-// =============================
-const selectedCar = ref(null)
-// =============================
-// 🔸 Forfaitaire Data
-// =============================
-const forfaitDeparture = ref('')
-const forfaitDestination = ref('')
-const destinations = [...points]
-const departureText = ref('')
-const selectedPlace = ref<ReverseSearchResult | null>(null)
-const handlePlaceSelected = (place: any) => {
-  departureText.value = place.display_name // 👈 Set input value
-  selectedPlace.value = place // Store the full object
+function prettyDate(date: Date): string {
+  return new Intl.DateTimeFormat('fr-FR', {
+    dateStyle: 'full',
+    timeStyle: 'short',
+  }).format(date)
 }
-// =============================
-// 🔸 Reservation Submit Handler
-// =============================
-emailjs.init('walt8N3u7ba3ic9lb') // Replace with your EmailJS public key
-function handleClick() {
+
+// ✅ Computed: Full Form Validation
+const isFormValid = computed(() => {
+  const info = passengerInfo.value
+  return (
+    selectedCar.value &&
+    forfaitDeparture.value &&
+    forfaitDestination.value &&
+    eventDateRef.value &&
+    info &&
+    info.name?.trim() &&
+    info.email?.trim() &&
+    info.phone?.trim() &&
+    info.passengers &&
+    info.baggage
+  )
+})
+
+// ✅ Handler: Form Submit
+const handleClick = () => {
+  if (isProcessing.value) return
+  isProcessing.value = true
   open.value = false
-  clearTimeout(timerRef.value)
-  timerRef.value = window.setTimeout(async () => {
-    eventDateRef.value = oneWeekAway()
-    open.value = true
+  clearTimeout(timerRef.value as number)
+
+  timerRef.value = setTimeout(async () => {
+    eventDateRef.value = new Date()
+    eventDateRef.value.setDate(eventDateRef.value.getDate() + 7)
+
     const code = generateReservationCode()
     const type = tripType.value === 'Forfaitaire' ? 'forfait' : 'personnalise'
+
     const reservation = {
       type,
       code,
@@ -225,24 +222,21 @@ function handleClick() {
       forfaitDestination: forfaitDestination.value,
       location: selectedPlace.value,
     }
+
     store.commit('reservation/saveReservation', reservation)
-    console.log(reservation)
-    //✳️Use onChoisirClicked from shared logic
 
-
-    onChoisirClickedFromReverse()
-
-
-    emailjs.send('', '', {
-      to_email: passengerInfo.value.email,
-      email: passengerInfo.value.email,
-      name: passengerInfo.value.name,
-      phone: passengerInfo.value.phone,
-      passengers: passengerInfo.value.passengers,
-      baggage: passengerInfo.value.baggage,
-      code,
-      date: prettyDate(eventDateRef.value),
-    }, 'walt8N3u7ba3ic9lb')
+    // Send email via EmailJS
+    emailjs
+      .send('', '', {
+        to_email: passengerInfo.value.email,
+        email: passengerInfo.value.email,
+        name: passengerInfo.value.name,
+        phone: passengerInfo.value.phone,
+        passengers: passengerInfo.value.passengers,
+        baggage: passengerInfo.value.baggage,
+        code,
+        date: prettyDate(eventDateRef.value),
+      })
       .then(() => {
         console.log('Email sent successfully!')
       })
@@ -250,20 +244,28 @@ function handleClick() {
         console.error('Email send error:', error)
       })
 
-    console.log('Réservation:', reservation)
+    open.value = true
+    window.location.replace(window.location.origin + '/#/success')
+    isProcessing.value = false
   }, 100)
 }
-// =============================
-// 🔸 Event Handlers from Children
-// =============================
+
+// ✅ Handlers for Child Events
+function handlePlaceSelected(place: any) {
+  departureText.value = place.display_name
+  selectedPlace.value = place
+}
+
 function handleDateChange(date: string) {
   console.log('Departure date selected:', date)
 }
+
 function handleInfoUpdate(data: PassengerInfo) {
   passengerInfo.value = data
   console.log('Received from child:', data)
 }
 </script>
+                                                                                                                  
 
 
 <style scoped>

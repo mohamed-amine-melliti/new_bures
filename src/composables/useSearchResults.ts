@@ -76,6 +76,6 @@ export function useSearchResults(props: { selectedPlace: Feature | null }, emit:
     activePlace,
     onPlaceClicked,
     onChoisirClicked,
-    //onChoisirClickedFromReverse
+   // onChoisirClickedFromReverse
   }
 }

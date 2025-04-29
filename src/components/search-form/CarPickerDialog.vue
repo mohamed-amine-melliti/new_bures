@@ -8,37 +8,25 @@
 
     <DialogPortal style="z-index: 999;">
       <DialogOverlay class="fixed inset-0 bg-black/40 z-40" />
-      <DialogContent
-        style="z-index: 999;"
-        class="fixed z-50 top-1/2 left-1/2 w-[90vw] max-w-xl max-h-[80vh] overflow-y-auto -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-2xl shadow-xl"
-      >
+      <DialogContent style="z-index: 999;"
+        class="fixed z-50 top-1/2 left-1/2 w-[90vw] max-w-xl max-h-[80vh] overflow-y-auto -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-2xl shadow-xl">
         <DialogTitle class="text-lg font-semibold mb-4">Choisir un véhicule</DialogTitle>
 
         <!-- 🔹 Car Cards -->
         <div class="grid gap-4">
-          <div
-            v-for="car in cars"
-            :key="car.id"
-            @click="selectCar(car)"
-            class="group relative flex items-center gap-4 rounded-xl border transition-all duration-200 cursor-pointer p-3
+          <div v-for="car in cars" :key="car.id" @click="selectCar(car)" class="group relative flex items-center gap-4 rounded-xl border transition-all duration-200 cursor-pointer p-3
               shadow-sm hover:shadow-md"
-            :class="selectedCar?.id === car.id ? 'border-gray-900 ring-2 ring-gray-900 bg-gray-50' : 'border-gray-200 bg-white hover:border-gray-300'"
-          >
+            :class="selectedCar?.id === car.id ? 'border-gray-900 ring-2 ring-gray-900 bg-gray-50' : 'border-gray-200 bg-white hover:border-gray-300'">
             <!-- ✅ Checkmark Icon -->
-            <div
-              v-if="selectedCar?.id === car.id"
-              class="absolute bottom-2 right-2 bg-gray-900 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md animate-zoom-in"
-            >
+            <div v-if="selectedCar?.id === car.id"
+              class="absolute bottom-2 right-2 bg-gray-900 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md animate-zoom-in">
               ✓
             </div>
 
             <!-- Car Image -->
             <div class="h-14 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
-              <img
-                :src="car.img || '/car-placeholder.png'"
-                :alt="car.name"
-                class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-200"
-              />
+              <img :src="car.img || '/car-placeholder.png'" :alt="car.name"
+                class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-200" />
             </div>
 
             <!-- Car Info -->
@@ -61,8 +49,6 @@
     </DialogPortal>
   </DialogRoot>
 </template>
-
-
 
 
 
@@ -154,10 +140,12 @@ function selectCar(car) {
     transform: scale(0.3);
     opacity: 0;
   }
+
   60% {
     transform: scale(1.2);
     opacity: 1;
   }
+
   100% {
     transform: scale(1);
   }
