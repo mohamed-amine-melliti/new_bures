@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue' // This is your reservation page component
 import Success from '../views/Success.vue'
+import payment_reservation from '../views/payment_reservation.vue'
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -12,6 +14,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/success',
     name: 'Success',
     component: Success
+  },
+
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: payment_reservation
   }
 ]
 
