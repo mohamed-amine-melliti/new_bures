@@ -21,7 +21,7 @@
       <div class="flex-1 overflow-y-auto pr-2 hide-scrollbar max-h-[calc(90vh-3rem)]">
         <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-4 space-y-4">
           <!-- Car Picker -->
-          <CarPickerTrigger v-model="selectedCar" />
+          <CarPickerTrigger v-model="selectedCar" :initial-value="{}" />
 
           <!-- Passenger Info -->
           <InfoPassager @update:info="handleInfoUpdate" />
@@ -70,7 +70,7 @@
                   isFormValid
                     ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
                     : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                ]" @click="isFormValid && handleClick('forfaitaire')">
+                ]" @click="isFormValid && handleClick()">
                   Réserver
                 </Button>
 
@@ -88,12 +88,12 @@
           <div v-else class="space-y-4">
             <div>
               <label class="block text-sm font-medium">Point de départ</label>
-              <SearchBarDepart @placeSelected="handlePlaceSelected" />
+              <SearchBarDepart :placeholder="''" @placeSelected="handlePlaceSelected" />
             </div>
 
             <div>
               <label class="block text-sm font-medium">Destination</label>
-              <SearchBar :placeholder="'Votre point de départ'" :car="selectedCar" v-model="departureText" />
+              <SearchBar :placeholder="'Votre point de départ'" :car="selectedCar || {}" v-model="departureText" />
             </div>
 
             <div class="pt-4">
@@ -103,7 +103,7 @@
                   isFormValid
                     ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
                     : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                ]" @click="isFormValid && handleClick('personnalise')">
+                ]" @click="isFormValid && handleClick()">
                   Réserver
                 </Button>
 
@@ -132,6 +132,7 @@ import { ref, computed, defineProps } from 'vue'
 import { useStore } from 'vuex'
 import { PassengerInfo, passengerInfo } from '@/interfaces/usePassengerInfo'
 import emailjs from '@emailjs/browser'
+import Appwrite from 'appwrite'
 import ReservationToast from './ReservationToast.vue'
 import SearchBarDepart from '../searchbardestination/SearchBarDepart.vue'
 import { ToastProvider, ToastViewport } from 'radix-vue'
@@ -140,6 +141,7 @@ import SearchBar from '../searchbar/SearchBar.vue'
 import InfoPassager from './InfoPassager.vue'
 import { points } from '@/interfaces/points'
 import CarPickerTrigger from './CarPickerTrigger.vue'
+import { Client, Databases } from 'appwrite';
 
 // ✅ UI tab classes
 const tabClass =
@@ -186,68 +188,94 @@ const store = useStore()
 emailjs.init('walt8N3u7ba3ic9lb')
 
 const handleClick = async () => {
-  const isLoading = ref(false)  // Reactive variable for loading state
-
+  const isLoading = ref(false)
   if (isLoading.value) return
   isLoading.value = true
-
   open.value = false
   clearTimeout(timerRef.value)
-  timerRef.value = setTimeout(async () => {
+  timerRef.value = window.setTimeout(async () => {
     eventDateRef.value = new Date()
     eventDateRef.value.setDate(eventDateRef.value.getDate() + 7)
-
     open.value = true
     const code = generateReservationCode()
     const type = tripType.value === 'Forfaitaire' ? 'forfait' : 'personnalise'
-
+    const amount = 99.99
     const reservation = {
       type,
       code,
-      car: selectedCar.value,
+      car: selectedCar.value.name,
       ...passengerInfo.value,
       departureDate: eventDateRef.value.toISOString(),
       tripType: tripType.value,
       forfaitDeparture: forfaitDeparture.value,
       forfaitDestination: forfaitDestination.value,
       location: selectedPlace.value,
+      amount
     }
-
     try {
-      // Set loading state to true
-      isLoading.value = true
 
-      // Use the native fetch function instead of $fetch (assuming no Nuxt)
-      const res = await fetch('/api/reservation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(reservation),
-      })
 
-      // Handle the successful creation response
-      const response = await res.json()
+      const client = new Client()
+        .setEndpoint('https://cloud.appwrite.io/v1')
+        .setProject('681a18a3000fd1a122c3');
+
+      const databases = new Databases(client);
+
+     
+
+
+      const response = await databases.createDocument(
+        '681a1e44003a9d3cff80',
+        '681a1e6c001005e4f72d',
+        'unique()',
+        reservation,
+      );
+
+      setTimeout(() => {
+        window.location.replace(window.location.origin + '/#/payment')
+      }, 3000)
+
+
       if (response.statusCode === 201) {
-        console.log('Reservation created successfully!')
-        // Optional: Perform any additional actions like clearing local storage
-        localStorage.clear()  // Clear local storage (customize if needed)
-        // Redirect or navigate to another page, if needed
-        window.location.replace(window.location.origin + '/#/success')
+
+        // 📅 Add to Google Calendar (OAuth access token must be available)
+        const accessToken = localStorage.getItem('googleAccessToken') // Get from your auth flow
+        if (accessToken) {
+          await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              summary: `Réservation: ${passengerInfo.value.name}`,
+              location: selectedPlace.value,
+              description: `Code: ${code}\nEmail: ${passengerInfo.value.email}\nTéléphone: ${passengerInfo.value.phone}`,
+              start: {
+                dateTime: eventDateRef.value.toISOString(),
+                timeZone: 'Europe/Paris'
+              },
+              end: {
+                dateTime: new Date(eventDateRef.value.getTime() + 2 * 60 * 60 * 1000).toISOString(),
+                timeZone: 'Europe/Paris'
+              }
+            })
+          })
+        }
+
+        // 💳 Store amount and redirect
+        localStorage.setItem('reservationAmount', JSON.stringify(amount))
+        return
       } else {
-        // Handle error if statusCode is not 201 (successful)
-        console.error('Failed to create reservation: ' + (response.message || 'Unknown error'))
+        console.error('Failed to create reservation:', response.message || 'Unknown error')
       }
     } catch (error) {
-      // Handle any errors that occur during the API request
-      console.error(error)
+      console.error('Error saving reservation:', error)
     } finally {
-      // Set loading state back to false once the request is complete
       isLoading.value = false
     }
 
     try {
-      // Send the reservation confirmation email
       await emailjs.send('your_service_id', 'your_template_id', {
         to_email: passengerInfo.value.email,
         email: passengerInfo.value.email,
@@ -258,16 +286,13 @@ const handleClick = async () => {
         code,
         date: prettyDate(eventDateRef.value),
       })
-
       console.log('Email sent and reservation saved!')
     } catch (error) {
       console.error('Error sending email:', error)
     }
   }, 100)
-
-  window.location.replace(window.location.origin + '/#/success')
-
 }
+
 
 // ✅ Event handlers
 function handlePlaceSelected(place: any) {
@@ -284,9 +309,6 @@ function handleInfoUpdate(data: PassengerInfo) {
   console.log('Received from child:', data)
 }
 </script>
-
-
-
 
 <style scoped>
 /* Completely hide scrollbar */

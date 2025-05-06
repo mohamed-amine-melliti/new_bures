@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue' // This is your reservation page component
 import Success from '../views/Success.vue'
-import payment_reservation from '../views/payment_reservation.vue'
+import payment_reservation from '../views/Payment_Reservation.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {

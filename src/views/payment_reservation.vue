@@ -135,7 +135,7 @@ const formatExpiryDate = (event) => {
 
 // Apply coupon
 const applyCoupon = () => {
-  if (couponCode.value.toLowerCase() === 'ulmusandburesvtc') {
+  if (couponCode.value.toLowerCase() === 'ulmusburesvtc') {
     discount.value = subtotal.value // Set discount to full amount
     couponMessage.value = 'Coupon applied successfully!'
     couponMessageType.value = 'success'

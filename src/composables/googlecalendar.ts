@@ -1,73 +1,25 @@
-// // composables/googleCalendar.ts
-// import { ref } from 'vue'
-// import { gapi } from 'gapi-script'
+import { google } from 'googleapis'
+import { Request, Response } from 'express'
 
-// const CLIENT_ID = '60001087269-604l6oqd1cfsgumafrg1hu599n32f7v3.apps.googleusercontent.com'
-// const API_KEY = 'AIzaSyDERLtexY6NQlF16gz1SQ_WDeUub3IhbB0'
-// const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest']
-// const SCOPES = 'https://www.googleapis.com/auth/calendar.events'
+export default async function handler(req: Request, res: Response) {
+  if (req.method !== 'POST') return res.status(405).send('Method not allowed')
 
-// const isSignedIn = ref(false)
+  const { token, event } = req.body
 
-// export function useGoogleCalendar() {
-//   function initClient() {
-//     return new Promise<void>((resolve, reject) => {
-//       gapi.load('client:auth2', async () => {
-//         try {
-//           await gapi.client.init({
-//             apiKey: API_KEY,
-//             clientId: CLIENT_ID,
-//             discoveryDocs: DISCOVERY_DOCS,
-//             scope: SCOPES,
-//           })
+  try {
+    const auth = new google.auth.OAuth2()
+    auth.setCredentials({ access_token: token })
 
-//           gapi.auth2.getAuthInstance().isSignedIn.listen((val) => {
-//             isSignedIn.value = val
-//           })
+    const calendar = google.calendar({ version: 'v3', auth })
 
-//           isSignedIn.value = gapi.auth2.getAuthInstance().isSignedIn.get()
-//           resolve()
-//         } catch (error) {
-//           reject(error)
-//         }
-//       })
-//     })
-//   }
+    const response = await calendar.events.insert({
+      calendarId: 'primary',
+      requestBody: event,
+    })
 
-//   function signIn() {
-//     return gapi.auth2.getAuthInstance().signIn()
-//   }
-
-//   function signOut() {
-//     return gapi.auth2.getAuthInstance().signOut()
-//   }
-
-//   async function createEvent(summary: string, start: string, end: string) {
-//     const event = {
-//       summary,
-//       start: {
-//         dateTime: start,
-//         timeZone: 'Europe/Paris',
-//       },
-//       end: {
-//         dateTime: end,
-//         timeZone: 'Europe/Paris',
-//       },
-//     }
-
-//     const request = gapi.client.calendar.events.insert({
-//       calendarId: 'primary',
-//       resource: event,
-//     })
-
-//     return request.execute()
-//   }
-
-//   return {
-//     initClient,
-//     signIn,
-//     signOut,
-//     createEvent,
-//     isSignedIn,
-//   }
-// }
+    res.status(200).json({ message: 'Event created', eventId: response.data.id })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to create event' })
+  }
+}

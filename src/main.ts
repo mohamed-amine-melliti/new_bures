@@ -6,6 +6,9 @@ import mapboxgl from 'mapbox-gl'
 import emailjs from 'emailjs-com' 
 import { createPinia } from 'pinia';
 
+
+
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRyYW1pMTIiLCJhIjoiY2xlcmowN25oMGM4YjN4cWo1d2VjdWtlbiJ9._i-alLPw_HV5Oaln2pNYtQ';
 
 

@@ -1,0 +1,112 @@
+/* Flower Animation Styles */
+
+/* Base styles for the showcase cards */
+.categories_showcase_inner {
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.categories_showcase_card {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* Position cards in a flower pattern */
+.categories_showcase_card.is-image1 {
+  z-index: 10;
+  /* Center card */
+}
+
+.categories_showcase_card.is-image2 {
+  top: 10%;
+  left: 30%;
+}
+
+.categories_showcase_card.is-image3 {
+  top: 20%;
+  right: 30%;
+}
+
+.categories_showcase_card.is-image4 {
+  bottom: 20%;
+  left: 25%;
+}
+
+.categories_showcase_card.is-image5 {
+  bottom: 15%;
+  right: 25%;
+}
+
+.categories_showcase_card.is-image6 {
+  top: 40%;
+  left: 15%;
+}
+
+.categories_showcase_card.is-image7 {
+  top: 40%;
+  right: 15%;
+}
+
+.categories_showcase_card.is-image8 {
+  bottom: 35%;
+  right: 20%;
+}
+
+/* Hover effects */
+.categories_showcase_card:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Category labels */
+.category_label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  padding: 15px 10px;
+  color: white;
+  text-align: center;
+  opacity: 0; /* Initially hidden, will be shown by animation */
+}
+
+/* Content section */
+.categories_showcase_content {
+  position: relative;
+  z-index: 20;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .categories_showcase_inner {
+    min-height: 700px;
+  }
+  
+  .categories_showcase_card {
+    position: relative;
+    margin-bottom: 15px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .categories_showcase_content {
+    margin-top: 20px;
+  }
+}
